@@ -64,6 +64,6 @@ class cDate {
     }
 }
 
-let obj = new cDate();
-console.log(obj.isValidDate('12/12/12'));
-obj.convertDate('12/12-22');
+// let obj = new cDate();
+// console.log(obj.isValidDate('12/12/12'));
+// obj.convertDate('12/12-22');

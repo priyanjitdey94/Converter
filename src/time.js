@@ -4,7 +4,7 @@ const Replace = require('./replace.js');
 const numberToWordObj = new NumberToWord();
 const replaceObj = new Replace();
 
-class Time {
+class cTime {
     constructor() {
         this.text = '';
         this.timeFormat = /^\d+[:]\d+([:]\d+){0,1}$/g;
@@ -24,16 +24,16 @@ class Time {
 
     isValidTime(_str) {
         let a = this.setTime(_str);
-        let b = this.timeFormat.match(_str);
+        let b = _str.match(this.timeFormat);
 
-        if (a === false || b === null || b.length < 2 || b.length > 3) {
+        if (a === false || b === null) {
             return false;
         }
         return true;
     }
 
     convertTime(str) {
-        if (str !== undefined && !isValidTime(_str)) {
+        if (str !== undefined && !this.isValidTime(str)) {
             console.log('Time not valid');
             return str;
         }
@@ -50,3 +50,7 @@ class Time {
         // return convertedTime.trim();
     }
 }
+
+let obj = new cTime();
+console.log(obj.isValidTime('20:43'));
+obj.convertTime('20:43');
