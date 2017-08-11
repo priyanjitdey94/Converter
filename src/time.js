@@ -7,7 +7,7 @@ const replaceObj = new Replace();
 class cTime {
     constructor() {
         this.text = '';
-        this.timeFormat = /^\d+[:]\d+([:]\d+){0,1}$/g;
+        this.timeFormat = /^\d+[:|\.]\d+([:|\.]\d+){0,1}(am|pm)$/g;
     }
 
     setTime(_str) {
@@ -51,6 +51,6 @@ class cTime {
     }
 }
 
-let obj = new cTime();
-console.log(obj.isValidTime('20:43'));
-obj.convertTime('20:43');
+// let obj = new cTime();
+// console.log(obj.isValidTime('20:43'));
+// obj.convertTime('20:43');
