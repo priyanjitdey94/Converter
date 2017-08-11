@@ -7,7 +7,7 @@ const replaceObj = new Replace();
 class cTime {
     constructor() {
         this.text = '';
-        this.timeFormat = /^\d+[:|\.]\d+([:|\.]\d+){0,1}(am|pm)$/g;
+        this.timeFormat = /^\d+[:|\.]\d+([:|\.]\d+){0,1}(am|pm)*$/g;
     }
 
     setTime(_str) {
@@ -33,9 +33,27 @@ class cTime {
     }
 
     convertTime(str) {
-        if (str !== undefined && !this.isValidTime(str)) {
+        if (str === undefined) {
             console.log('Time not valid');
             return str;
+        }
+        if((str.substr(str.length-2,2).toLowerCase()==='am') || (str.substr(str.length-2,2).toLowerCase()==='pm')){
+            if(this.isValidTime(str.substr(0,str.length-2))){
+                let digitRegex=/\d+/g;
+                let timeArray=this.text.match(digitRegex);
+                let timeInWordArray=[];
+                let i;
+                console.log(this.text);
+                for(i=0;i<timeArray.length;i++){
+                    timeInWordArray.push(numberToWordObj.convert(timeArray[i]));
+                    this.text.replace(timeArray[i],timeInWordArray[i]);
+                }
+                replaceObj.show(this.text);console.log(timeInWordArray);
+                return;
+            }else{
+                //console.log('')
+                return str;
+            }
         }
         let convertedTime = '';
         let timeAr = this.text.split(':');
@@ -51,6 +69,6 @@ class cTime {
     }
 }
 
-// let obj = new cTime();
-// console.log(obj.isValidTime('20:43'));
-// obj.convertTime('20:43');
+let obj = new cTime();
+console.log(obj.isValidTime('20:43'));
+obj.convertTime('20:43');
