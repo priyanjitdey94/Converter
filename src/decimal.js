@@ -19,7 +19,7 @@ class Decimal {
     isDecimal(str) {
         let a = this.setDecimal(str);
         let b = this.decimal.match(this.decimalFormat);
-        if(b===null || a===false){
+        if (b === null || a === false) {
             return false;
         }
         return true;
@@ -44,5 +44,5 @@ class Decimal {
     }
 }
 
-const obj=new Decimal();
+const obj = new Decimal();
 console.log(obj.convertDecimal('33.44'));
