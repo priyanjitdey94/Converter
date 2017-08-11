@@ -95,6 +95,7 @@ class NumberToWord {
     }
 }
 
+module.exports = NumberToWord;
 // let obj=new NumberToWord();
 // obj.setNumber(212443);
 // console.log(obj.convert());
