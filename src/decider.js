@@ -43,26 +43,8 @@ class Decider{
         return wordBreakUp;
     }
 
-    fetchNumber(word){
-        let i,j;
-        let numberFetched=[];
-        i=0;
-        while(isNaN(parseInt(word[i])) && i<word.length){
-            i++;
-        }
-        j=word.length-1;
-        while(isNaN(parseInt(word[j])) && j>=0){
-            j--;
-        }
-
-        numberFetched.push(word.substr(0,i));
-        numberFetched.push(word.substr(i,j-i+1));
-        numberFetched.push(word.substr(j+1,word.length-j));
-
-        return numberFetched;
-    }
     decide(word,pos){
-        console.log('Decider');
+        // console.log('Decider');
         if(word===undefined){
             return false;
         }
@@ -71,7 +53,7 @@ class Decider{
         let temp=this.clean(this.text);
         // let arr=this.fetchNumber(temp[0]);
         
-        console.log(temp[1]);
+        // console.log(temp[1]);
         if(specialMiddleObj.isValidSpecialMiddle(temp[1])){
             specialMiddleObj.chooseBranch(word,pos);
         }else if(cardinalObj.isValidCardinal(temp[1])){

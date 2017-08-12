@@ -65,14 +65,14 @@ class SpecialMiddle{
     }
 
     chooseBranch(word,pos){
-        console.log('specialMiddle');
+        // console.log('specialMiddle');
         if(word===undefined){
-            return;
+            return false;
         }
 
         let temp=this.clean(word);
         temp[1]=temp[1].trim();
-        console.log(temp[1]);
+        // console.log(temp[1]);
         if(decimalOrFractionObj.isValidDecimalOrFraction(temp[1])){
             if(decimalOrFractionObj.isDecimal(temp[1])){
                 decimalOrFractionObj.convertToDecimal(word,pos);
