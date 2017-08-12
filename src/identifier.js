@@ -2,7 +2,7 @@ class Identifier {
     constructor() {
         this.text = '';
         this.splitAr = [];
-        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
+        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']'];
     }
 
     belongsToPunctuation(c) {
@@ -61,20 +61,7 @@ class Identifier {
         let i, j;
         for (i = 0; i < this.splitAr.length; i++) {
             if (this.containNumber(this.splitAr[i])) {
-                if (this.containLetter(this.splitAr[i])) {
-                    let arr = this.clean(this.splitAr[i]);
-                    // send arr[0]+'' to decider;
-                } else {
-                    let str = this.splitAr[i] + '';
-                    if (i !== 0) {
-                        str = this.splitAr[i - 1] + ' ' + str;
-                    }
-                    if (i !== this.splitAr.length - 1) {
-                        str = str + ' ' + this.splitAr[i + 1];
-                    }
-                    console.log(str);
-                    // send str to decider;
-                }
+                // call decider
             }
         }
     }
