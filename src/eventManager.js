@@ -6,6 +6,7 @@ class EventManager extends EventEmitter{
         this.taskTobeProcessed=0;
         this.taskProcessed=0;
         this.processingDone=false;
+        this.modified=[];
         EventEmitter.call(this);
     }
 
@@ -17,6 +18,26 @@ class EventManager extends EventEmitter{
     }
     complete(){
         this.processingDone=true;
+    }
+    check(){
+        if(this.taskProcessed===this.taskTobeProcessed && this.processingDone){
+            return true;
+        }
+        return false;
+    }
+    makeChangesAndPublish(arr){
+        let i,j,k;
+        j=1;
+        let finalStr='';
+        for(i=0;i<arr.length;i++){
+            if(j<this.modified.length && i===this.modified[j]){
+                finalStr+=this.modified[j-1]+' ';
+                j+=2;
+            }else{
+                finalStr+=arr[i]+' ';
+            }
+        }
+        console.log(finalStr.trim());
     }
 }
 

@@ -1,9 +1,9 @@
-
 const eventManager=require('./eventManager.js');
 const Decider=require('./decider.js');
+const Replace=require('./replace.js');
 
 const deciderObj=new Decider();
-
+const replaceobj=new Replace();
 class Identifier {
     constructor() {
         this.text = '';
@@ -64,15 +64,37 @@ class Identifier {
         this.splitAr = this.text.split(' ');
         console.log(this.splitAr);
 
-        let i, j;
+        let i, j,localThis=this;
         for (i = 0; i < this.splitAr.length; i++) {
-            if (this.containNumber(this.splitAr[i])) {
-                // call decider
-                deciderObj.decide(this.splitAr[i],i);
+            (function(j){
+                setTimeout(function(){
+                    if(localThis.containNumber(localThis.splitAr[j])){
+                        deciderObj.decide(localThis.splitAr[j],j);
+                        eventManager.addTask();
+                    }
+                    if(j===localThis.splitAr.length-1){
+                        eventManager.emit('finish',localThis.splitAr,replaceobj);
+                    }
+                },j);
+            })(i);
+        }
+    }
+
+    makeChangesAndPublish(arr){
+        let i,j,k;
+        j=1;
+        let finalStr='';
+        for(i=0;i<this.splitAr.length;i++){
+            if(j<arr.length && i===arr[j]){
+                finalStr+=arr[j-1]+' ';
+                j+=2;
+            }else{
+                finalStr+=this.splitAr[i]+' ';
             }
         }
+        console.log(finalStr.trim());
     }
 }
 
 const obj = new Identifier();
-obj.splitIntoArray('I am a very good boy 12:11am.');
+obj.splitIntoArray('I am a very 55 good 24/12/22) 2.55 boy 12:11am.');
