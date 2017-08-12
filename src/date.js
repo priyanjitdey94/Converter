@@ -10,7 +10,8 @@ class cDate {
         this.dd = '';
         this.mm = '';
         this.yy = '';
-        this.dateFormat = /^\d{1,2}[/|.|-]\d{1,2}[/|.|-]\d{2,4}$/g;
+        this.dateFormat = /^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{1,2}$/g;
+        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
         this.months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     }
 
@@ -24,6 +25,35 @@ class cDate {
     }
     getDate() {
         return this.text;
+    }
+
+    belongsToPunctuation(c) {
+        let i;
+        for (i = 0; i < this.punctuation.length; i++) {
+            if (c === this.punctuation[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    clean(word) {
+        let i, j;
+        let wordBreakUp = [];
+        i = 0;
+        while (this.belongsToPunctuation(word[i]) && i < word.length) {
+            i++;
+        }
+        j = word.length - 1;
+        while (this.belongsToPunctuation(word[j]) && j >= 0) {
+            j--;
+        }
+
+        wordBreakUp.push(word.substr(0, i));
+        wordBreakUp.push(word.substr(i, j - i + 1));
+        wordBreakUp.push(word.substr(j + 1, word.length - j));
+
+        return wordBreakUp;
     }
 
     belong(c) {
@@ -43,11 +73,14 @@ class cDate {
         return true;
     }
 
-    convertDate(_str) {
-        if (!this.isValidDate(_str)) {
-            console.log('Not a valid date.');
-            return false;
+    convertDate(_str,pos) {
+        console.log('Date');
+        if (_str==undefined) {
+            return;
         }
+        let temp = this.clean(_str);
+        _str=temp[1];
+        console.log(_str);
         let breakPoints = [];
         let i, j = 0,
             k;
@@ -60,10 +93,11 @@ class cDate {
         let m = numberToWordObj.convert(this.text.substr(breakPoints[0] + 1, breakPoints[1] - breakPoints[0] - 1));
         let y = numberToWordObj.convert(this.text.substr(breakPoints[1] + 1, this.text.length - 1 - breakPoints[1]));
 
-        replaceObj.show(d + this.text.charAt(breakPoints[0]) + m + this.text.charAt(breakPoints[1]) + y);
+        replaceObj.doReplace(temp[0]+d + this.text.charAt(breakPoints[0]) + m + this.text.charAt(breakPoints[1]) + y+[temp[2]],pos);
     }
 }
 
+module.exports=cDate;
 // let obj = new cDate();
 // console.log(obj.isValidDate('12/12/12'));
 // obj.convertDate('12/12-22');

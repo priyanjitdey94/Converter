@@ -7,6 +7,7 @@ const numberToWordObj=new NumberToWord();
 class OrdinalToCardinal{
     constructor(){
         this.text='';
+        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
         this.cOnePlace = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eigth', 'ninth'];
         this.cOneInTenPlace = ['tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth',
                                 'seventeenth', 'eighteenth', 'nineteenth'];
@@ -40,30 +41,81 @@ class OrdinalToCardinal{
         }else return false;
     }
 
-    checkForOrdinal(_str){
-        if(!this.isValidOrdinal(_str)){
-            return;
-        }
-        let i,j,k;
-        for(i=0;i<this.cOnePlace.length;i++){
-            if(_str===this.cOnePlace[i]){
-                return numberToWordObj.onePlace[i];
+    belongsToPunctuation(c) {
+        let i;
+        for (i = 0; i < this.punctuation.length; i++) {
+            if (c === this.punctuation[i]) {
+                return true;
             }
         }
-        for(i=0;i<this.cTenPlace.length;i++){
-            if(_str===this.cTenPlace[i]){
-                return numberToWordObj.tenPlace[i];
+        return false;
+    }
+
+    clean(word) {
+        let i, j;
+        let wordBreakUp = [];
+        i = 0;
+        while (this.belongsToPunctuation(word[i]) && i < word.length) {
+            i++;
+        }
+        j = word.length - 1;
+        while (this.belongsToPunctuation(word[j]) && j >= 0) {
+            j--;
+        }
+
+        wordBreakUp.push(word.substr(0, i));
+        wordBreakUp.push(word.substr(i, j - i + 1));
+        wordBreakUp.push(word.substr(j + 1, word.length - j));
+
+        return wordBreakUp;
+    }
+
+    findEquivalentOrdinal(_str){
+        let i;
+        for(i=0;i<numberToWordObj.onePlace.length;i++){
+            if(_str===numberToWordObj.onePlace[i]){
+                return this.cOnePlace[i];
             }
         }
-        for(i=0;i<this.cOneInTenPlace.length;i++){
-            if(_str===this.cOneInTenPlace[i]){
-                return numberToWordObj.oneInTenPlace[i];
+        for(i=0;i<numberToWordObj.tenPlace.length;i++){
+            if(_str===numberToWordObj.tenPlace[i]){
+                return this.cTenPlace[i];
             }
         }
-        for(i=0;i<this.cMileStone.length;i++){
-            if(_str===this.cMileStone[i]){
-                return numberToWordObj.mileStone[i];
+        for(i=0;i<numberToWordObj.oneInTenPlace.length;i++){
+            if(_str===numberToWordObj.oneInTenPlace[i]){
+                return this.cOneInTenPlace[i];
+            }
+        }
+        for(i=0;i<numberToWordObj.mileStone.length;i++){
+            if(_str===numberToWordObj.mileStone[i]){
+                return this.cMileStone[i];
             }
         }
     }
+    convertOrdinal(word,pos){
+        console.log('ordinalToCardinal');
+        if(word === undefined){
+            return;
+        }
+        let temp=this.clean(word);
+        word=temp[1];
+
+        let i,j,k,finalStr='';
+        let numString=word.substr(0,word.length-2),
+            suffix=word.substr(word.length-2,2);
+
+        let convertedNumString=numberToWordObj.convert(numString);
+        k=convertedNumString.split(' ');
+        j=k.pop();
+        k.push(this.findEquivalentOrdinal(j));
+
+        for(i=0;i<k.length;i++){
+            finalStr+=(k[i]+' ');
+        }
+        finalStr=finalStr.trim();
+        replaceObj.doReplace(temp[0]+finalStr+temp[2],pos);
+    }
 }
+
+module.exports=OrdinalToCardinal;

@@ -11,7 +11,8 @@ const phoneObj=new Phone();
 class SpecialMiddle{
     constructor(){
         this.text='';
-        this.format=/(((\d+[:|\/|-|.])*\d+[:|\/|-|.]\d+(am|pm| am| pm)*))|(((\+){0,1}\d{1,2}(-){0,1})*\d{10})/g;
+        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
+        this.format=/^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{1,2}$|^\d+(\.)\d+$|^\d+(\/)\d+$|^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}$|^\d{10}$|^\+\d{1,2}\-\d{10}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
     }
 
     getText(){
@@ -24,36 +25,67 @@ class SpecialMiddle{
         this.text=_str;
         return true;
     }
-
+    
     isValidSpecialMiddle(_str){
         let a = this.setText(_str);
         let b = _str.match(this.format);
-        if(!a && b===null){
+        if(a===false || b===null){
             return false;
         }
         return true;
     }
 
-    chooseBranch(_str){
-        if(!isValidSpecialMiddle(_str)){
-            return _str;
+    belongsToPunctuation(c) {
+        let i;
+        for (i = 0; i < this.punctuation.length; i++) {
+            if (c === this.punctuation[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    clean(word) {
+        let i, j;
+        let wordBreakUp = [];
+        i = 0;
+        while (this.belongsToPunctuation(word[i]) && i < word.length) {
+            i++;
+        }
+        j = word.length - 1;
+        while (this.belongsToPunctuation(word[j]) && j >= 0) {
+            j--;
         }
 
-        if(decimalOrFractionObj.isDecimalOrFraction(_str)){
-            if(decimalOrFractionObj.isDecimal(_str)){
-                decimalOrFractionObj.convertToDecimal(_str);
-            }else if(decimalOrFractionObj.isFraction(_str)){
-                decimalOrFractionObj.convertToFraction(_str);
+        wordBreakUp.push(word.substr(0, i));
+        wordBreakUp.push(word.substr(i, j - i + 1));
+        wordBreakUp.push(word.substr(j + 1, word.length - j));
+
+        return wordBreakUp;
+    }
+
+    chooseBranch(word,pos){
+        console.log('specialMiddle');
+        if(!this.isValidSpecialMiddle(word)){
+            return;
+        }
+
+        let temp=this.clean(word);
+        temp[1]=temp[1].trim();
+        if(decimalOrFractionObj.isValidDecimalOrFraction(temp[1])){
+            if(decimalOrFractionObj.isDecimal(temp[1])){
+                decimalOrFractionObj.convertToDecimal(word,pos);
+            }else if(decimalOrFractionObj.isFraction(temp[1])){
+                decimalOrFractionObj.convertToFraction(word,pos);
             }
-        }else if(cTimeObj.isValidTime(_str)){
-            cTimeObj.convertTime(_str);
-        }else if(cDateObj.isValidDate(_str)){
-            cDateObj.convertDate(_str);
-        }else if(phoneObj.isValidPhone(_str)){
-            phoneObj.convertPhone(_str);
-        }else{
-            _str+='[Ambiguous]';
-            return _str;
+        }else if(cTimeObj.isValidTime(temp[1])){
+            cTimeObj.convertTime(word,pos);
+        }else if(cDateObj.isValidDate(temp[1])){
+            cDateObj.convertDate(word,pos);
+        }else if(phoneObj.isValidPhone(temp[1])){
+            phoneObj.convertPhone(word,pos);
         }
     }
 }
+
+module.exports=SpecialMiddle;

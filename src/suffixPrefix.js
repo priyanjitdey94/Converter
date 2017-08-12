@@ -74,10 +74,10 @@ class SuffixPrefix{
 
         if(ordinalToCardinalObj.isValidOrdinal(temp[1])){
             ordinalToCardinalObj.convertOrdinal(word,pos);
-        }else if(cTimeObj.isValidTime(temp[1])){
-            cTimeObj.convertTime(word,pos);
         }else{
             replaceObj.doReplace(word,pos);
         }
     }
 }
+
+module.exports=SuffixPrefix;

@@ -7,7 +7,8 @@ const replaceObj = new Replace();
 class cTime {
     constructor() {
         this.text = '';
-        this.timeFormat = /^\d+[:|\.]\d+([:|\.]\d+){0,1}(am|pm)*$/g;
+        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
+        this.timeFormat = /^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
     }
 
     setTime(_str) {
@@ -32,7 +33,37 @@ class cTime {
         return true;
     }
 
-    convertTime(str) {
+    belongsToPunctuation(c) {
+        let i;
+        for (i = 0; i < this.punctuation.length; i++) {
+            if (c === this.punctuation[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    clean(word) {
+        let i, j;
+        let wordBreakUp = [];
+        i = 0;
+        while (this.belongsToPunctuation(word[i]) && i < word.length) {
+            i++;
+        }
+        j = word.length - 1;
+        while (this.belongsToPunctuation(word[j]) && j >= 0) {
+            j--;
+        }
+
+        wordBreakUp.push(word.substr(0, i));
+        wordBreakUp.push(word.substr(i, j - i + 1));
+        wordBreakUp.push(word.substr(j + 1, word.length - j));
+
+        return wordBreakUp;
+    }
+    
+    convertTime(str,pos) {
+        console.log('cTime');
         if (str === undefined) {
             console.log('Time not valid');
             return str;
@@ -69,6 +100,7 @@ class cTime {
     }
 }
 
-let obj = new cTime();
-console.log(obj.isValidTime('20:43'));
-obj.convertTime('20:43');
+module.exports=cTime;
+// let obj = new cTime();
+// console.log(obj.isValidTime('20:43'));
+// obj.convertTime('20:43');

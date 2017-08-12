@@ -12,8 +12,9 @@ class Replace {
         if (value === undefined || pos === undefined) {
             return 'Illegal Arguement in doReplace';
         }
-        window.arr[pos] = value + '';
-        return window.arr[pos];
+        console.log(value+' '+pos);
+        //window.arr[pos] = value + '';
+        //return window.arr[pos];
     }
 }
 

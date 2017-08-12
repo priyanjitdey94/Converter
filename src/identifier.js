@@ -1,3 +1,4 @@
+
 const eventManager=require('./eventManager.js');
 const Decider=require('./decider.js');
 
@@ -73,5 +74,5 @@ class Identifier {
     }
 }
 
-// const obj = new Identifier();
-// obj.splitIntoArray('I am a very good boy 3rd 2pm. 1.2kg. 2 am. Rs.2');
+const obj = new Identifier();
+obj.splitIntoArray('I am a very good boy (12221.) am');

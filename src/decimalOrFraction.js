@@ -7,9 +7,9 @@ const decimalObj = new Decimal();
 class DecimalOrFraction {
     constructor() {
         this.text = '';
-        this.format = /^\d+[.\/]\d+$/g;
-        this.decimalFormat = /^\d+[.]\d+$/g;
-        this.fractionFormat = /^\d+[\/]\d+$/g;
+        this.format = /^\d+(\.)\d+$|^\d+(\/)\d+$/g;
+        this.decimalFormat = /^\d+(\.)\d+$/g;
+        this.fractionFormat = /^\d+(\/)\d+$/g;
     }
 
     getText() {
@@ -20,13 +20,15 @@ class DecimalOrFraction {
             console.log('Text cannot be undefined.');
             return false;
         }
+        this.text=_str;
+        return true;
     }
 
-    isDecimalOrFraction(_str) {
+    isValidDecimalOrFraction(_str) {
         this.setText(_str);
         let a = this.setText(_str);
         let b = this.text.match(this.format);
-        if (b === null || b.length > 1 || a === false) {
+        if (b === null || a === false) {
             return false;
         }
         return true;
@@ -49,10 +51,14 @@ class DecimalOrFraction {
         return false;
     }
 
-    convertToDecimal(_str) {
-        let convertedText = decimalObj.convertDecimal(_str);
+    convertToDecimal(word,pos) {
+        console.log('DecimalOrFraction');
+        let convertedText = decimalObj.convertDecimal(word,pos);
     }
-    convertToFraction(_str) {
-        let convertedText = fractionObj.convertFraction(_str);
+    convertToFraction(word,pos) {
+        console.log('DecimalOrFraction');
+        let convertedText = fractionObj.convertFraction(word,pos);
     }
 }
+
+module.exports=DecimalOrFraction;
