@@ -5,9 +5,9 @@ class Replace {
         // this.modified=[];
     }
 
-    show(str) {
-        console.log(str);
-    }
+    // show(str) {
+    //     console.log(str);
+    // }
     doReplace(value, pos) {
         if (value === undefined || pos === undefined) {
             return;

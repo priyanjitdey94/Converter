@@ -17,7 +17,7 @@ class DecimalOrFraction {
     }
     setText(_str) {
         if (_str === undefined) {
-            console.log('Text cannot be undefined.');
+            // console.log('Text cannot be undefined.');
             return false;
         }
         this.text=_str;
@@ -52,11 +52,11 @@ class DecimalOrFraction {
     }
 
     convertToDecimal(word,pos) {
-        console.log('DecimalOrFraction');
+        // console.log('DecimalOrFraction');
         let convertedText = decimalObj.convertDecimal(word,pos);
     }
     convertToFraction(word,pos) {
-        console.log('DecimalOrFraction');
+        // console.log('DecimalOrFraction');
         let convertedText = fractionObj.convertFraction(word,pos);
     }
 }

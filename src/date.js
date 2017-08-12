@@ -10,14 +10,14 @@ class cDate {
         this.dd = '';
         this.mm = '';
         this.yy = '';
-        this.dateFormat = /^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{1,2}$/g;
+        this.dateFormat = /^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{2,4}$/g;
         this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
         this.months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     }
 
     setDate(_str) {
         if (_str === undefined) {
-            console.log('Date cannot be undefined');
+            // console.log('Date cannot be undefined');
             return false;
         }
         this.text = _str;
@@ -74,13 +74,13 @@ class cDate {
     }
 
     convertDate(_str,pos) {
-        console.log('Date');
+        // console.log('Date');
         if (_str==undefined) {
             return;
         }
         let temp = this.clean(_str);
         _str=temp[1];
-        console.log(_str);
+        // console.log(_str);
         let breakPoints = [];
         let i, j = 0,
             k;

@@ -13,7 +13,7 @@ class Decimal {
 
     setDecimal(str) {
         if (str === undefined) {
-            console.log('Decimal cannot be undefined');
+            // console.log('Decimal cannot be undefined');
             return false;
         }
         this.decimal = str;
@@ -26,7 +26,7 @@ class Decimal {
     isDecimal(str) {
         let a = this.setDecimal(str);
         let b = this.decimal.match(this.decimalFormat);
-        if (b === null || a === false) {
+        if ( a === false || b === null) {
             return false;
         }
         return true;
@@ -62,7 +62,7 @@ class Decimal {
     }
 
     convertDecimal(str,pos) {
-        console.log('decimal');
+        // console.log('decimal');
         if (str===undefined) {
             return;
         }

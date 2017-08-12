@@ -19,9 +19,6 @@ class Fraction{
         return true;
     }
     getFraction(){
-        if(this.fraction===''){
-            return 'Value not set(Fraction)';
-        }
         return this.fraction;
     }
 
@@ -64,9 +61,9 @@ class Fraction{
     }
 
     convertFraction(str,pos){
-        console.log('fraction');
-        if(str!==undefined){
-            this.setFraction(str);
+        // console.log('fraction');
+        if(str===undefined){
+            return;
         }
 
         let temp=this.clean(str);
