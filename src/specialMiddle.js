@@ -12,7 +12,7 @@ class SpecialMiddle{
     constructor(){
         this.text='';
         this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
-        this.format=/^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{1,2}$|^\d+(\.)\d+$|^\d+(\/)\d+$|^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}$|^\d{10}$|^\+\d{1,2}\-\d{10}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
+        this.format=/^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{1,2}$|^\d+(\.)\d+$|^\d+(\/)\d+$|^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){0,1}$|^\d{10}$|^\+\d{1,2}\-\d{10}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
     }
 
     getText(){
@@ -66,12 +66,13 @@ class SpecialMiddle{
 
     chooseBranch(word,pos){
         console.log('specialMiddle');
-        if(!this.isValidSpecialMiddle(word)){
+        if(word===undefined){
             return;
         }
 
         let temp=this.clean(word);
         temp[1]=temp[1].trim();
+        console.log(temp[1]);
         if(decimalOrFractionObj.isValidDecimalOrFraction(temp[1])){
             if(decimalOrFractionObj.isDecimal(temp[1])){
                 decimalOrFractionObj.convertToDecimal(word,pos);

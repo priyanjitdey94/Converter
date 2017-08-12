@@ -75,4 +75,4 @@ class Identifier {
 }
 
 const obj = new Identifier();
-obj.splitIntoArray('I am a very good boy (12221.) am');
+obj.splitIntoArray('I am a very good boy 12:11am.');
