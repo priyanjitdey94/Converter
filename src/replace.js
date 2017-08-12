@@ -1,3 +1,5 @@
+const eventManager=require('./eventManager.js');
+
 class Replace {
     constructor() {
 

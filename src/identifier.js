@@ -1,3 +1,8 @@
+const eventManager=require('./eventManager.js');
+const Decider=require('./decider.js');
+
+const deciderObj=new Decider();
+
 class Identifier {
     constructor() {
         this.text = '';
@@ -62,10 +67,11 @@ class Identifier {
         for (i = 0; i < this.splitAr.length; i++) {
             if (this.containNumber(this.splitAr[i])) {
                 // call decider
+                deciderObj.decide(this.splitAr[i],i);
             }
         }
     }
 }
 
-const obj = new Identifier();
-obj.splitIntoArray('I am a very good boy 3rd 2pm. 1.2kg. 2 am. Rs.2');
+// const obj = new Identifier();
+// obj.splitIntoArray('I am a very good boy 3rd 2pm. 1.2kg. 2 am. Rs.2');
