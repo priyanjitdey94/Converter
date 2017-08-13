@@ -1,17 +1,18 @@
 const NumberToWord = require('./numberToWord.js');
 const Replace = require('./replace.js');
+const Cleaner = require('./cleaner.js');
 
 const numberToWordObj = new NumberToWord();
 const replaceObj = new Replace();
 
-class cDate {
+class cDate extends Cleaner {
     constructor() {
+        super();
         this.text = '';
         this.dd = '';
         this.mm = '';
         this.yy = '';
         this.dateFormat = /^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{2,4}$/g;
-        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
         this.months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     }
 
@@ -25,35 +26,6 @@ class cDate {
     }
     getDate() {
         return this.text;
-    }
-
-    belongsToPunctuation(c) {
-        let i;
-        for (i = 0; i < this.punctuation.length; i++) {
-            if (c === this.punctuation[i]) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    clean(word) {
-        let i, j;
-        let wordBreakUp = [];
-        i = 0;
-        while (this.belongsToPunctuation(word[i]) && i < word.length) {
-            i++;
-        }
-        j = word.length - 1;
-        while (this.belongsToPunctuation(word[j]) && j >= 0) {
-            j--;
-        }
-
-        wordBreakUp.push(word.substr(0, i));
-        wordBreakUp.push(word.substr(i, j - i + 1));
-        wordBreakUp.push(word.substr(j + 1, word.length - j));
-
-        return wordBreakUp;
     }
 
     belong(c) {
@@ -73,13 +45,18 @@ class cDate {
         return true;
     }
 
-    convertDate(_str,pos) {
+    convertDate(_str, pos) {
         // console.log('Date');
-        if (_str==undefined) {
+        if (_str == undefined) {
             return;
         }
+        let word = _str;
         let temp = this.clean(_str);
-        _str=temp[1];
+        _str = temp[1];
+        if (!this.setDate(_str)) {
+            replaceObj.doReplace(_str, pos);
+            return;
+        }
         // console.log(_str);
         let breakPoints = [];
         let i, j = 0,
@@ -89,15 +66,65 @@ class cDate {
                 breakPoints.push(i);
             }
         }
-        let d = numberToWordObj.convert(this.text.substr(0, breakPoints[0]));
-        let m = numberToWordObj.convert(this.text.substr(breakPoints[0] + 1, breakPoints[1] - breakPoints[0] - 1));
-        let y = numberToWordObj.convert(this.text.substr(breakPoints[1] + 1, this.text.length - 1 - breakPoints[1]));
+        let checkDD = this.text.substr(0, breakPoints[0]);
+        let checkMM = this.text.substr(breakPoints[0] + 1, breakPoints[1] - breakPoints[0] - 1);
+        let checkYY = this.text.substr(breakPoints[1] + 1, this.text.length - 1 - breakPoints[1]);
 
-        replaceObj.doReplace(temp[0]+d + this.text.charAt(breakPoints[0]) + m + this.text.charAt(breakPoints[1]) + y+[temp[2]],pos);
+        let checkD = parseInt(checkDD);
+        let checkM = parseInt(checkMM);
+        let checkY = parseInt(checkYY);
+
+        if (isNaN(checkD) || isNaN(checkM) || isNaN(checkY)) {
+            replaceObj.doReplace(word, pos);
+            return;
+        } else if (checkM < 1 || checkM > 12 || checkD < 1 || checkD > 31) {
+            replaceObj.doReplace(word, pos);
+            return;
+        } else if (checkM === 4 || checkM === 6 || checkM === 9 || checkM === 11) {
+            if (checkD > 30) {
+                replaceObj.doReplace(word, pos);
+                return;
+            }
+        } else if (checkM === 2 && checkY % 4 !== 0) {
+            if (checkD > 28) {
+                replaceObj.doReplace(word, pos);
+                return;
+            }
+        } else if (checkM === 2 && checkY % 4 === 0) {
+            if (checkD > 29) {
+                replaceObj.doReplace(word, pos);
+                return;
+            }
+        }
+
+        if (checkYY.length === 2) {
+            if (checkY <= 50) {
+                checkYY = '20' + checkYY;
+            } else {
+                checkYY = '19' + checkYY;
+            }
+        } else if (checkYY.length === 3) {
+            checkYY = '2' + checkYY;
+        }
+
+        let d = numberToWordObj.convert(checkDD);
+        let m = numberToWordObj.convert(checkMM);
+        let y = numberToWordObj.convert(checkYY);
+
+        let daySplit = d.split(' ');
+        k = daySplit.pop();
+        daySplit.push(numberToWordObj.findEquivalentOrdinal(k));
+        d = '';
+
+        for (i = 0; i < daySplit.length; i++) {
+            d += (daySplit[i] + ' ');
+        }
+        m = this.months[checkM] + ' ';
+        replaceObj.doReplace(temp[0] + d + m + y + [temp[2]], pos);
     }
 }
 
-module.exports=cDate;
+module.exports = cDate;
 // let obj = new cDate();
 // console.log(obj.isValidDate('12/12/12'));
 // obj.convertDate('12/12-22');

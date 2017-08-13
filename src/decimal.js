@@ -1,14 +1,15 @@
 const NumberToWord = require('./numberToWord.js');
 const Replace = require('./replace.js');
+const Cleaner = require('./cleaner.js');
 
 const numberToWord = new NumberToWord();
 const replaceObj = new Replace();
 
-class Decimal {
+class Decimal extends Cleaner {
     constructor() {
+        super();
         this.decimal = '';
         this.decimalFormat = /^\d+(\.)\d+$/g;
-        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
     }
 
     setDecimal(str) {
@@ -26,48 +27,19 @@ class Decimal {
     isDecimal(str) {
         let a = this.setDecimal(str);
         let b = this.decimal.match(this.decimalFormat);
-        if ( a === false || b === null) {
+        if (a === false || b === null) {
             return false;
         }
         return true;
     }
 
-    belongsToPunctuation(c) {
-        let i;
-        for (i = 0; i < this.punctuation.length; i++) {
-            if (c === this.punctuation[i]) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    clean(word) {
-        let i, j;
-        let wordBreakUp = [];
-        i = 0;
-        while (this.belongsToPunctuation(word[i]) && i < word.length) {
-            i++;
-        }
-        j = word.length - 1;
-        while (this.belongsToPunctuation(word[j]) && j >= 0) {
-            j--;
-        }
-
-        wordBreakUp.push(word.substr(0, i));
-        wordBreakUp.push(word.substr(i, j - i + 1));
-        wordBreakUp.push(word.substr(j + 1, word.length - j));
-
-        return wordBreakUp;
-    }
-
-    convertDecimal(str,pos) {
+    convertDecimal(str, pos) {
         // console.log('decimal');
-        if (str===undefined) {
+        if (str === undefined) {
             return;
         }
-        let temp=this.clean(str);
-        str=temp[1];
+        let temp = this.clean(str);
+        str = temp[1];
 
         let decimalAr = str.split('.');
 
@@ -79,10 +51,10 @@ class Decimal {
             afterPoint += (numberToWord.convert(decimalAr[1].charAt(i)) + ' ');
         }
 
-        replaceObj.doReplace(temp[0]+beforePoint + '.' + afterPoint.trim()+temp[2],pos);
+        replaceObj.doReplace(temp[0] + beforePoint + '.' + afterPoint.trim() + temp[2], pos);
     }
 }
 
-module.exports=Decimal;
+module.exports = Decimal;
 // const obj = new Decimal();
 // console.log(obj.convertDecimal('33.44'));

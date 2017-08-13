@@ -7,6 +7,14 @@ class NumberToWord {
         this.tenPlace = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
         this.oneInTenPlace = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
         this.mileStone = ['', 'thousand', 'million', 'billion', 'hundred'];
+        this.cOnePlace = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eigth', 'ninth'];
+        this.cOneInTenPlace = ['tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth',
+            'seventeenth', 'eighteenth', 'nineteenth'
+        ];
+        this.cTenPlace = ['', '', 'twentieth', 'thirteeth', 'fortieth', 'fiftieth', 'sixtieth', 'seventieth',
+            'eightieth', 'ninetieth'
+        ];
+        this.cMileStone = ['', 'thousandth', 'millionth', 'billionth', 'hundredth'];
     }
 
     setNumber(_num) {
@@ -28,6 +36,29 @@ class NumberToWord {
     // getSuffix(){
     //     return this.suffix;
     // }
+    findEquivalentOrdinal(_str) {
+        let i;
+        for (i = 0; i < this.onePlace.length; i++) {
+            if (_str === this.onePlace[i]) {
+                return this.cOnePlace[i];
+            }
+        }
+        for (i = 0; i < this.tenPlace.length; i++) {
+            if (_str === this.tenPlace[i]) {
+                return this.cTenPlace[i];
+            }
+        }
+        for (i = 0; i < this.oneInTenPlace.length; i++) {
+            if (_str === this.oneInTenPlace[i]) {
+                return this.cOneInTenPlace[i];
+            }
+        }
+        for (i = 0; i < this.mileStone.length; i++) {
+            if (_str === this.mileStone[i]) {
+                return this.cMileStone[i];
+            }
+        }
+    }
 
     toHundredPlace(x, y, z) {
         let str = [],

@@ -1,14 +1,15 @@
 const NumberToWord = require('./numberToWord.js');
 const Replace = require('./replace.js');
+const Cleaner = require('./cleaner.js');
 
 const numberToWordObj = new NumberToWord();
 const replaceObj = new Replace();
 
-class Phone {
+class Phone extends Cleaner {
     constructor() {
+        super();
         this.text = '';
         this.phoneFormat = /^\d{10}$|^\+\d{1,2}\-\d{10}$/g;
-        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
     }
 
     getPhone() {
@@ -30,42 +31,15 @@ class Phone {
         }
         return true;
     }
-    belongsToPunctuation(c) {
-        let i;
-        for (i = 0; i < this.punctuation.length; i++) {
-            if (c === this.punctuation[i]) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    clean(word) {
-        let i, j;
-        let wordBreakUp = [];
-        i = 0;
-        while (this.belongsToPunctuation(word[i]) && i < word.length) {
-            i++;
-        }
-        j = word.length - 1;
-        while (this.belongsToPunctuation(word[j]) && j >= 0) {
-            j--;
-        }
-
-        wordBreakUp.push(word.substr(0, i));
-        wordBreakUp.push(word.substr(i, j - i + 1));
-        wordBreakUp.push(word.substr(j + 1, word.length - j));
-
-        return wordBreakUp;
-    }
-    convertPhone(_str,pos) {
-        console.log('phone');
-        if (_str===undefined) {
+    convertPhone(_str, pos) {
+        // console.log('phone');
+        if (_str === undefined) {
             return _str;
         }
-        let temp=this.clean(_str);
-        _str=temp[1];
-        
+        let temp = this.clean(_str);
+        _str = temp[1];
+
         let i, j, k, finalStr = '';
         // if (_str.charAt(0) === '+') {
         //     finalStr = '+';
@@ -76,11 +50,11 @@ class Phone {
                 finalStr += numberToWordObj.convert(_str.substr(i, 1)) + ' ';
             }
         }
-        replaceObj.doReplace(temp[0]+finalStr.trim()+temp[2],pos);
+        replaceObj.doReplace(temp[0] + finalStr.trim() + temp[2], pos);
     }
 }
 
-module.exports=Phone;
+module.exports = Phone;
 // let obj = new Phone();
 // console.log(obj.isValidPhone('+91-9474851429'));
 // obj.convertPhone('+91-9474851429');

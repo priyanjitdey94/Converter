@@ -1,11 +1,13 @@
 const Fraction = require('./fraction.js');
 const Decimal = require('./decimal.js');
+const Cleaner = require('./cleaner.js');
 
 const fractionObj = new Fraction();
 const decimalObj = new Decimal();
 
-class DecimalOrFraction {
+class DecimalOrFraction extends Cleaner {
     constructor() {
+        super();
         this.text = '';
         this.format = /^\d+(\.)\d+$|^\d+(\/)\d+$/g;
         this.decimalFormat = /^\d+(\.)\d+$/g;
@@ -20,7 +22,7 @@ class DecimalOrFraction {
             // console.log('Text cannot be undefined.');
             return false;
         }
-        this.text=_str;
+        this.text = _str;
         return true;
     }
 
@@ -51,14 +53,14 @@ class DecimalOrFraction {
         return false;
     }
 
-    convertToDecimal(word,pos) {
+    convertToDecimal(word, pos) {
         // console.log('DecimalOrFraction');
-        let convertedText = decimalObj.convertDecimal(word,pos);
+        let convertedText = decimalObj.convertDecimal(word, pos);
     }
-    convertToFraction(word,pos) {
+    convertToFraction(word, pos) {
         // console.log('DecimalOrFraction');
-        let convertedText = fractionObj.convertFraction(word,pos);
+        let convertedText = fractionObj.convertFraction(word, pos);
     }
 }
 
-module.exports=DecimalOrFraction;
+module.exports = DecimalOrFraction;
