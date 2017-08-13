@@ -6,44 +6,44 @@ const numberToWordObj = new NumberToWord();
 const replaceObj = new Replace();
 
 class Cardinal extends Cleaner {
-    constructor() {
-        super();
-        this.text = '';
-    }
+  constructor () {
+    super();
+    this.text = '';
+  }
 
-    setCardinal(_str) {
-        if (_str === undefined) {
-            return false;
-        }
-        this.text = _str;
-        return true;
+  setCardinal (_str) {
+    if (_str === undefined) {
+      return false;
     }
-    getCardinal() {
-        return this.text;
-    }
+    this.text = _str;
+    return true;
+  }
+  getCardinal () {
+    return this.text;
+  }
 
-    isValidCardinal(_str) {
-        let a = this.setCardinal(_str);
+  isValidCardinal (_str) {
+    let a = this.setCardinal(_str);
 
-        let i, j;
-        for (i = 0; i < _str.length; i++) {
-            if (isNaN(parseInt(_str.substr(i, 1)))) {
-                return false;
-            }
-        }
-        return true && a;
+    let i;
+    for (i = 0; i < _str.length; i++) {
+      if (isNaN(parseInt(_str.substr(i, 1)))) {
+        return false;
+      }
     }
+    return true && a;
+  }
 
-    convertCardinal(_str, pos) {
-        // console.log('cardinal');
-        if (_str === undefined) {
-            return;
-        }
-        let temp = this.clean(_str);
-        _str = temp[1];
-        let cardinal = numberToWordObj.convert(_str);
-        replaceObj.doReplace(cardinal, pos);
+  convertCardinal (_str, pos) {
+    // console.log('cardinal');
+    if (_str === undefined) {
+      return;
     }
+    let temp = this.clean(_str);
+    _str = temp[1];
+    let cardinal = numberToWordObj.convert(_str);
+    replaceObj.doReplace(cardinal, pos);
+  }
 }
 
 module.exports = Cardinal;

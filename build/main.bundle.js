@@ -75,47 +75,47 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Cleaner = function () {
-    function Cleaner() {
-        _classCallCheck(this, Cleaner);
+  function Cleaner() {
+    _classCallCheck(this, Cleaner);
 
-        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
+    this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
+  }
+
+  _createClass(Cleaner, [{
+    key: 'belongsToPunctuation',
+    value: function belongsToPunctuation(c) {
+      var i = void 0;
+      for (i = 0; i < this.punctuation.length; i++) {
+        if (c === this.punctuation[i]) {
+          return true;
+        }
+      }
+      return false;
     }
+  }, {
+    key: 'clean',
+    value: function clean(word) {
+      var i = void 0,
+          j = void 0;
+      var wordBreakUp = [];
+      i = 0;
+      while (this.belongsToPunctuation(word[i]) && i < word.length) {
+        i++;
+      }
+      j = word.length - 1;
+      while (this.belongsToPunctuation(word[j]) && j >= 0) {
+        j--;
+      }
 
-    _createClass(Cleaner, [{
-        key: 'belongsToPunctuation',
-        value: function belongsToPunctuation(c) {
-            var i = void 0;
-            for (i = 0; i < this.punctuation.length; i++) {
-                if (c === this.punctuation[i]) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }, {
-        key: 'clean',
-        value: function clean(word) {
-            var i = void 0,
-                j = void 0;
-            var wordBreakUp = [];
-            i = 0;
-            while (this.belongsToPunctuation(word[i]) && i < word.length) {
-                i++;
-            }
-            j = word.length - 1;
-            while (this.belongsToPunctuation(word[j]) && j >= 0) {
-                j--;
-            }
+      wordBreakUp.push(word.substr(0, i));
+      wordBreakUp.push(word.substr(i, j - i + 1));
+      wordBreakUp.push(word.substr(j + 1, word.length - j));
 
-            wordBreakUp.push(word.substr(0, i));
-            wordBreakUp.push(word.substr(i, j - i + 1));
-            wordBreakUp.push(word.substr(j + 1, word.length - j));
+      return wordBreakUp;
+    }
+  }]);
 
-            return wordBreakUp;
-        }
-    }]);
-
-    return Cleaner;
+  return Cleaner;
 }();
 
 module.exports = Cleaner;
@@ -134,39 +134,39 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var eventManager = __webpack_require__(3);
 
 var Replace = function () {
-    function Replace() {
-        // this.modified=[];
+  function Replace() {
+    // this.modified=[];
 
-        _classCallCheck(this, Replace);
+    _classCallCheck(this, Replace);
+  }
+
+  _createClass(Replace, [{
+    key: 'doReplace',
+    value: function doReplace(value, pos) {
+      if (value === undefined || pos === undefined) {
+        return;
+      }
+      eventManager.modified.push(value);
+      eventManager.modified.push(pos);
+      eventManager.removeTask();
     }
+  }]);
 
-    _createClass(Replace, [{
-        key: 'doReplace',
-        value: function doReplace(value, pos) {
-            if (value === undefined || pos === undefined) {
-                return;
-            }
-            eventManager.modified.push(value);
-            eventManager.modified.push(pos);
-            eventManager.removeTask();
-        }
-    }]);
-
-    return Replace;
+  return Replace;
 }();
 
 eventManager.on('finish', function (arr) {
-    eventManager.complete();
-    var timer = setInterval(function () {
-        if (eventManager.check()) {
-            eventManager.emit('done', arr);
-            clearInterval(timer);
-        }
-    }, 20);
+  eventManager.complete();
+  var timer = setInterval(function () {
+    if (eventManager.check()) {
+      eventManager.emit('done', arr);
+      clearInterval(timer);
+    }
+  }, 20);
 });
 
-eventManager.on('done', function (arr, obj) {
-    eventManager.makeChangesAndPublish(arr);
+eventManager.on('done', function (arr) {
+  eventManager.makeChangesAndPublish(arr);
 });
 
 module.exports = Replace;
@@ -183,141 +183,141 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var NumberToWord = function () {
-    function NumberToWord(_num) {
-        _classCallCheck(this, NumberToWord);
+  function NumberToWord(_num) {
+    _classCallCheck(this, NumberToWord);
 
-        this.num = 0;
-        // this.suffix='';
-        // this.prefix='';
-        this.onePlace = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-        this.tenPlace = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-        this.oneInTenPlace = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-        this.mileStone = ['', 'thousand', 'million', 'billion', 'hundred'];
-        this.cOnePlace = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eigth', 'ninth'];
-        this.cOneInTenPlace = ['tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'];
-        this.cTenPlace = ['', '', 'twentieth', 'thirteeth', 'fortieth', 'fiftieth', 'sixtieth', 'seventieth', 'eightieth', 'ninetieth'];
-        this.cMileStone = ['', 'thousandth', 'millionth', 'billionth', 'hundredth'];
+    this.num = 0;
+    // this.suffix='';
+    // this.prefix='';
+    this.onePlace = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+    this.tenPlace = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+    this.oneInTenPlace = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+    this.mileStone = ['', 'thousand', 'million', 'billion', 'hundred'];
+    this.cOnePlace = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eigth', 'ninth'];
+    this.cOneInTenPlace = ['tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'];
+    this.cTenPlace = ['', '', 'twentieth', 'thirteeth', 'fortieth', 'fiftieth', 'sixtieth', 'seventieth', 'eightieth', 'ninetieth'];
+    this.cMileStone = ['', 'thousandth', 'millionth', 'billionth', 'hundredth'];
+  }
+
+  _createClass(NumberToWord, [{
+    key: 'setNumber',
+    value: function setNumber(_num) {
+      this.num = parseInt(_num);
     }
+    // setPrefix(_prefix){
+    //     this.prefix=_prefix;
+    // }
+    // setSuffix(_suffix){
+    //     this.suffix=_suffix;
+    // }
 
-    _createClass(NumberToWord, [{
-        key: 'setNumber',
-        value: function setNumber(_num) {
-            this.num = parseInt(_num);
+  }, {
+    key: 'getNumber',
+    value: function getNumber() {
+      return this.num;
+    }
+    // getPrefix(){
+    //     return this.prefix;
+    // }
+    // getSuffix(){
+    //     return this.suffix;
+    // }
+
+  }, {
+    key: 'findEquivalentOrdinal',
+    value: function findEquivalentOrdinal(_str) {
+      var i = void 0;
+      for (i = 0; i < this.onePlace.length; i++) {
+        if (_str === this.onePlace[i]) {
+          return this.cOnePlace[i];
         }
-        // setPrefix(_prefix){
-        //     this.prefix=_prefix;
-        // }
-        // setSuffix(_suffix){
-        //     this.suffix=_suffix;
-        // }
-
-    }, {
-        key: 'getNumber',
-        value: function getNumber() {
-            return this.num;
+      }
+      for (i = 0; i < this.tenPlace.length; i++) {
+        if (_str === this.tenPlace[i]) {
+          return this.cTenPlace[i];
         }
-        // getPrefix(){
-        //     return this.prefix;
-        // }
-        // getSuffix(){
-        //     return this.suffix;
-        // }
-
-    }, {
-        key: 'findEquivalentOrdinal',
-        value: function findEquivalentOrdinal(_str) {
-            var i = void 0;
-            for (i = 0; i < this.onePlace.length; i++) {
-                if (_str === this.onePlace[i]) {
-                    return this.cOnePlace[i];
-                }
-            }
-            for (i = 0; i < this.tenPlace.length; i++) {
-                if (_str === this.tenPlace[i]) {
-                    return this.cTenPlace[i];
-                }
-            }
-            for (i = 0; i < this.oneInTenPlace.length; i++) {
-                if (_str === this.oneInTenPlace[i]) {
-                    return this.cOneInTenPlace[i];
-                }
-            }
-            for (i = 0; i < this.mileStone.length; i++) {
-                if (_str === this.mileStone[i]) {
-                    return this.cMileStone[i];
-                }
-            }
+      }
+      for (i = 0; i < this.oneInTenPlace.length; i++) {
+        if (_str === this.oneInTenPlace[i]) {
+          return this.cOneInTenPlace[i];
         }
-    }, {
-        key: 'toHundredPlace',
-        value: function toHundredPlace(x, y, z) {
-            var str = [],
-                finalStr = '',
-                i = void 0;
-            if (x > 0) {
-                str.push(this.onePlace[x] + ' hundred');
-            }
-
-            if (y === 1) {
-                str.push(this.oneInTenPlace[z] + '');
-            } else if (y > 1) {
-                str.push(this.tenPlace[y] + '');
-                str.push(this.onePlace[z] + '');
-            } else {
-                str.push(this.onePlace[z] + '');
-            }
-
-            for (i = 0; i < str.length; i++) {
-                finalStr += str[i] + ' ';
-            }
-            return finalStr.trim();
+      }
+      for (i = 0; i < this.mileStone.length; i++) {
+        if (_str === this.mileStone[i]) {
+          return this.cMileStone[i];
         }
-    }, {
-        key: 'convert',
-        value: function convert(_num) {
-            if (_num !== undefined) {
-                this.setNumber(_num);
-            }
+      }
+    }
+  }, {
+    key: 'toHundredPlace',
+    value: function toHundredPlace(x, y, z) {
+      var str = [],
+          finalStr = '',
+          i = void 0;
+      if (x > 0) {
+        str.push(this.onePlace[x] + ' hundred');
+      }
 
-            if (this.getNumber() === 0) {
-                return 'zero';
-            }
+      if (y === 1) {
+        str.push(this.oneInTenPlace[z] + '');
+      } else if (y > 1) {
+        str.push(this.tenPlace[y] + '');
+        str.push(this.onePlace[z] + '');
+      } else {
+        str.push(this.onePlace[z] + '');
+      }
 
-            var temp = this.getNumber(),
-                numArray = [],
-                i = void 0,
-                j = void 0,
-                k = void 0;
+      for (i = 0; i < str.length; i++) {
+        finalStr += str[i] + ' ';
+      }
+      return finalStr.trim();
+    }
+  }, {
+    key: 'convert',
+    value: function convert(_num) {
+      if (_num !== undefined) {
+        this.setNumber(_num);
+      }
 
-            while (temp > 0) {
-                numArray.push(temp % 10);
-                temp /= 10;
-                temp = Math.floor(temp);
-            }
-            if (numArray.length % 3 !== 0) {
-                numArray.push(0);
-            }
-            if (numArray.length % 3 !== 0) {
-                numArray.push(0);
-            }
+      if (this.getNumber() === 0) {
+        return 'zero';
+      }
 
-            var str = [];
-            for (i = 2, j = 0; i < numArray.length; i += 3, j++) {
-                var tempStr = this.toHundredPlace(numArray[i], numArray[i - 1], numArray[i - 2]);
-                if (tempStr.trim() !== '') {
-                    str.push(tempStr + ' ' + this.mileStone[j]);
-                }
-            }
+      var temp = this.getNumber(),
+          numArray = [],
+          i = void 0,
+          j = void 0,
+          k = void 0;
 
-            var finalStr = '';
-            for (i = str.length - 1; i >= 0; i--) {
-                finalStr += str[i] + ' ';
-            }
-            return finalStr.trim();
+      while (temp > 0) {
+        numArray.push(temp % 10);
+        temp /= 10;
+        temp = Math.floor(temp);
+      }
+      if (numArray.length % 3 !== 0) {
+        numArray.push(0);
+      }
+      if (numArray.length % 3 !== 0) {
+        numArray.push(0);
+      }
+
+      var str = [];
+      for (i = 2, j = 0; i < numArray.length; i += 3, j++) {
+        var tempStr = this.toHundredPlace(numArray[i], numArray[i - 1], numArray[i - 2]);
+        if (tempStr.trim() !== '') {
+          str.push(tempStr + ' ' + this.mileStone[j]);
         }
-    }]);
+      }
 
-    return NumberToWord;
+      var finalStr = '';
+      for (i = str.length - 1; i >= 0; i--) {
+        finalStr += str[i] + ' ';
+      }
+      return finalStr.trim();
+    }
+  }]);
+
+  return NumberToWord;
 }();
 
 module.exports = NumberToWord;
@@ -343,74 +343,74 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var EventEmitter = __webpack_require__(11);
 
 var EventManager = function (_EventEmitter) {
-    _inherits(EventManager, _EventEmitter);
+  _inherits(EventManager, _EventEmitter);
 
-    function EventManager() {
-        _classCallCheck(this, EventManager);
+  function EventManager() {
+    _classCallCheck(this, EventManager);
 
-        var _this = _possibleConstructorReturn(this, (EventManager.__proto__ || Object.getPrototypeOf(EventManager)).call(this));
+    var _this = _possibleConstructorReturn(this, (EventManager.__proto__ || Object.getPrototypeOf(EventManager)).call(this));
 
-        _this.taskTobeProcessed = 0;
-        _this.taskProcessed = 0;
-        _this.processingDone = false;
-        _this.modified = [];
-        EventEmitter.call(_this);
-        return _this;
+    _this.taskTobeProcessed = 0;
+    _this.taskProcessed = 0;
+    _this.processingDone = false;
+    _this.modified = [];
+    EventEmitter.call(_this);
+    return _this;
+  }
+
+  _createClass(EventManager, [{
+    key: 'initialize',
+    value: function initialize() {
+      this.taskProcessed = 0;
+      this.taskTobeProcessed = 0;
+      this.processingDone = false;
+      this.modified = [];
     }
+  }, {
+    key: 'addTask',
+    value: function addTask() {
+      this.taskTobeProcessed++;
+    }
+  }, {
+    key: 'removeTask',
+    value: function removeTask() {
+      this.taskProcessed++;
+    }
+  }, {
+    key: 'complete',
+    value: function complete() {
+      this.processingDone = true;
+    }
+  }, {
+    key: 'check',
+    value: function check() {
+      if (this.taskProcessed === this.taskTobeProcessed && this.processingDone) {
+        return true;
+      }
+      return false;
+    }
+  }, {
+    key: 'makeChangesAndPublish',
+    value: function makeChangesAndPublish(arr) {
+      var i = void 0,
+          j = void 0,
+          k = void 0;
+      j = 1;
+      var finalStr = '';
+      for (i = 0; i < arr.length; i++) {
+        if (j < this.modified.length && i === this.modified[j]) {
+          finalStr += this.modified[j - 1] + ' ';
+          j += 2;
+        } else {
+          finalStr += arr[i] + ' ';
+        }
+      }
+      // console.log(finalStr.trim());
+      document.getElementById('input2').value = finalStr.trim();
+    }
+  }]);
 
-    _createClass(EventManager, [{
-        key: 'initialize',
-        value: function initialize() {
-            this.taskProcessed = 0;
-            this.taskTobeProcessed = 0;
-            this.processingDone = false;
-            this.modified = [];
-        }
-    }, {
-        key: 'addTask',
-        value: function addTask() {
-            this.taskTobeProcessed++;
-        }
-    }, {
-        key: 'removeTask',
-        value: function removeTask() {
-            this.taskProcessed++;
-        }
-    }, {
-        key: 'complete',
-        value: function complete() {
-            this.processingDone = true;
-        }
-    }, {
-        key: 'check',
-        value: function check() {
-            if (this.taskProcessed === this.taskTobeProcessed && this.processingDone) {
-                return true;
-            }
-            return false;
-        }
-    }, {
-        key: 'makeChangesAndPublish',
-        value: function makeChangesAndPublish(arr) {
-            var i = void 0,
-                j = void 0,
-                k = void 0;
-            j = 1;
-            var finalStr = '';
-            for (i = 0; i < arr.length; i++) {
-                if (j < this.modified.length && i === this.modified[j]) {
-                    finalStr += this.modified[j - 1] + ' ';
-                    j += 2;
-                } else {
-                    finalStr += arr[i] + ' ';
-                }
-            }
-            // console.log(finalStr.trim());
-            document.getElementById('input2').value = finalStr.trim();
-        }
-    }]);
-
-    return EventManager;
+  return EventManager;
 }(EventEmitter);
 
 module.exports = new EventManager();
@@ -438,106 +438,106 @@ var numberToWordObj = new NumberToWord();
 var replaceObj = new Replace();
 
 var cTime = function (_Cleaner) {
-    _inherits(cTime, _Cleaner);
+  _inherits(cTime, _Cleaner);
 
-    function cTime() {
-        _classCallCheck(this, cTime);
+  function cTime() {
+    _classCallCheck(this, cTime);
 
-        var _this = _possibleConstructorReturn(this, (cTime.__proto__ || Object.getPrototypeOf(cTime)).call(this));
+    var _this = _possibleConstructorReturn(this, (cTime.__proto__ || Object.getPrototypeOf(cTime)).call(this));
 
-        _this.text = '';
-        _this.timeFormat = /^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){0,1}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
-        return _this;
+    _this.text = '';
+    _this.timeFormat = /^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){0,1}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
+    return _this;
+  }
+
+  _createClass(cTime, [{
+    key: 'setTime',
+    value: function setTime(_str) {
+      if (_str === undefined) {
+        // console.log('Time cannot be undefined');
+        return false;
+      }
+      this.text = _str;
+      return true;
     }
+  }, {
+    key: 'getTime',
+    value: function getTime() {
+      return this.text;
+    }
+  }, {
+    key: 'isValidTime',
+    value: function isValidTime(_str) {
+      var a = this.setTime(_str);
+      var b = _str.match(this.timeFormat);
 
-    _createClass(cTime, [{
-        key: 'setTime',
-        value: function setTime(_str) {
-            if (_str === undefined) {
-                // console.log('Time cannot be undefined');
-                return false;
-            }
-            this.text = _str;
-            return true;
-        }
-    }, {
-        key: 'getTime',
-        value: function getTime() {
-            return this.text;
-        }
-    }, {
-        key: 'isValidTime',
-        value: function isValidTime(_str) {
-            var a = this.setTime(_str);
-            var b = _str.match(this.timeFormat);
+      if (a === false || b === null) {
+        return false;
+      }
+      return true;
+    }
+  }, {
+    key: 'fetchNumber',
+    value: function fetchNumber(str) {
+      var j = str.length - 1;
+      var div = [];
+      while (isNaN(parseInt(str.substr(j, 1)) && j >= 0)) {
+        j--;
+      }
+      div.push(str.substr(0, j + 1));
+      div.push(str.substr(j + 1, str.length - j - 1));
 
-            if (a === false || b === null) {
-                return false;
-            }
-            return true;
-        }
-    }, {
-        key: 'fetchNumber',
-        value: function fetchNumber(str) {
-            var j = str.length - 1;
-            var div = [];
-            while (isNaN(parseInt(str.substr(j, 1)) && j >= 0)) {
-                j--;
-            }
-            div.push(str.substr(0, j + 1));
-            div.push(str.substr(j + 1, str.length - j - 1));
+      return div;
+    }
+  }, {
+    key: 'actualFormatConversion',
+    value: function actualFormatConversion(word) {
+      var k = word.split(':');
+      var h = numberToWordObj.convert(k[0]);
+      var m = -1;
+      if (k.length >= 2) {
+        m = numberToWordObj.convert(k[1]);
+      }
+      var s = -1;
+      if (k.length >= 3) {
+        s = numberToWordObj.convert(k[2]);
+      }
 
-            return div;
-        }
-    }, {
-        key: 'actualFormatConversion',
-        value: function actualFormatConversion(word) {
-            var k = word.split(':');
-            var h = numberToWordObj.convert(k[0]);
-            var m = -1;
-            if (k.length >= 2) {
-                m = numberToWordObj.convert(k[1]);
-            }
-            var s = -1;
-            if (k.length >= 3) {
-                s = numberToWordObj.convert(k[2]);
-            }
+      var finalTime = '';
+      finalTime += h === 'one' ? h + ' hour ' : h + ' hours ';
+      if (m !== -1) {
+        finalTime += m === 'one' ? m + ' minute' : m + ' minutes';
+      }
+      if (s !== -1) {
+        finalTime += s === 'one' ? ' ' + s + ' second' : ' ' + s + ' seconds';
+      }
+      return finalTime;
+    }
+  }, {
+    key: 'convertTime',
+    value: function convertTime(word, pos) {
+      // console.log('cTime');
+      if (word === undefined) {
+        return;
+      }
+      var temp = this.clean(word);
+      word = temp[1];
 
-            var finalTime = '';
-            finalTime += h === 'one' ? h + ' hour ' : h + ' hours ';
-            if (m !== -1) {
-                finalTime += m === 'one' ? m + ' minute' : m + ' minutes';
-            }
-            if (s !== -1) {
-                finalTime += s === 'one' ? ' ' + s + ' second' : ' ' + s + ' seconds';
-            }
-            return finalTime;
-        }
-    }, {
-        key: 'convertTime',
-        value: function convertTime(word, pos) {
-            // console.log('cTime');
-            if (word === undefined) {
-                return;
-            }
-            var temp = this.clean(word);
-            word = temp[1];
+      var i = void 0,
+          j = void 0,
+          k = [];
+      if (word[word.length - 1] === 'm' || word[word.length - 1] === 'M') {
+        k = this.fetchNumber(word);
+        j = this.actualFormatConversion(k[0]);
+        // console.log(k);
+        replaceObj.doReplace(temp[0] + j + temp[2], pos);
+      } else {
+        replaceObj.doReplace(temp[0] + this.actualFormatConversion(word) + temp[2], pos);
+      }
+    }
+  }]);
 
-            var i = void 0,
-                j = void 0,
-                k = [];
-            if (word[word.length - 1] === 'm' || word[word.length - 1] === 'M') {
-                k = this.fetchNumber(word);
-                j = this.actualFormatConversion(k[0]);
-                // console.log(k);
-                replaceObj.doReplace(temp[0] + j + temp[2], pos);
-            } else {
-                replaceObj.doReplace(temp[0] + this.actualFormatConversion(word) + temp[2], pos);
-            }
-        }
-    }]);
-
-    return cTime;
+  return cTime;
 }(Cleaner);
 
 module.exports = cTime;
@@ -565,91 +565,91 @@ var deciderObj = new Decider();
 var replaceobj = new Replace();
 
 var Identifier = function () {
-    function Identifier() {
-        _classCallCheck(this, Identifier);
+  function Identifier() {
+    _classCallCheck(this, Identifier);
 
-        this.text = '';
-        this.splitAr = [];
-        this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']'];
+    this.text = '';
+    this.splitAr = [];
+    this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']'];
+  }
+
+  _createClass(Identifier, [{
+    key: 'initialize',
+    value: function initialize() {
+      this.text = '';
+      this.splitAr = [];
     }
+  }, {
+    key: 'containNumber',
+    value: function containNumber(word) {
+      var reg = /\d+/g;
+      if (word.match(reg) === null) {
+        return false;
+      }
+      return true;
+    }
+  }, {
+    key: 'sendForProcessing',
+    value: function sendForProcessing(j, localThis) {
+      setTimeout(function () {
+        if (localThis.containNumber(localThis.splitAr[j])) {
+          deciderObj.decide(localThis.splitAr[j], j);
+          eventManager.addTask();
+        }
+        if (j === localThis.splitAr.length - 1) {
+          eventManager.emit('finish', localThis.splitAr, replaceobj);
+        }
+      }, j);
+    }
+  }, {
+    key: 'splitIntoArray',
+    value: function splitIntoArray(_str) {
+      // console.log('identifier');
+      if (_str === undefined) {
+        return false;
+      }
+      this.text = _str;
+      this.splitAr = this.text.split(' ');
+      // console.log(this.splitAr);
 
-    _createClass(Identifier, [{
-        key: 'initialize',
-        value: function initialize() {
-            this.text = '';
-            this.splitAr = [];
+      var i = void 0,
+          j = void 0,
+          localThis = this;
+      for (i = 0; i < this.splitAr.length; i++) {
+        this.sendForProcessing(i, this);
+      }
+    }
+  }, {
+    key: 'makeChangesAndPublish',
+    value: function makeChangesAndPublish(arr) {
+      var i = void 0,
+          j = void 0,
+          k = void 0;
+      j = 1;
+      var finalStr = '';
+      for (i = 0; i < this.splitAr.length; i++) {
+        if (j < arr.length && i === arr[j]) {
+          finalStr += arr[j - 1] + ' ';
+          j += 2;
+        } else {
+          finalStr += this.splitAr[i] + ' ';
         }
-    }, {
-        key: 'containNumber',
-        value: function containNumber(word) {
-            var reg = /\d+/g;
-            if (word.match(reg) === null) {
-                return false;
-            }
-            return true;
-        }
-    }, {
-        key: 'sendForProcessing',
-        value: function sendForProcessing(j, localThis) {
-            setTimeout(function () {
-                if (localThis.containNumber(localThis.splitAr[j])) {
-                    deciderObj.decide(localThis.splitAr[j], j);
-                    eventManager.addTask();
-                }
-                if (j === localThis.splitAr.length - 1) {
-                    eventManager.emit('finish', localThis.splitAr, replaceobj);
-                }
-            }, j);
-        }
-    }, {
-        key: 'splitIntoArray',
-        value: function splitIntoArray(_str) {
-            // console.log('identifier');
-            if (_str === undefined) {
-                return false;
-            }
-            this.text = _str;
-            this.splitAr = this.text.split(' ');
-            // console.log(this.splitAr);
+      }
+      // console.log(finalStr.trim());
+    }
+  }]);
 
-            var i = void 0,
-                j = void 0,
-                localThis = this;
-            for (i = 0; i < this.splitAr.length; i++) {
-                this.sendForProcessing(i, this);
-            }
-        }
-    }, {
-        key: 'makeChangesAndPublish',
-        value: function makeChangesAndPublish(arr) {
-            var i = void 0,
-                j = void 0,
-                k = void 0;
-            j = 1;
-            var finalStr = '';
-            for (i = 0; i < this.splitAr.length; i++) {
-                if (j < arr.length && i === arr[j]) {
-                    finalStr += arr[j - 1] + ' ';
-                    j += 2;
-                } else {
-                    finalStr += this.splitAr[i] + ' ';
-                }
-            }
-            // console.log(finalStr.trim());
-        }
-    }]);
-
-    return Identifier;
+  return Identifier;
 }();
 
 var obj = new Identifier();
 // obj.splitIntoArray('I am a very 55 good 28/2/22) 9474851429 2/3 100th 2.55 1.22kgs. boy 12:11am.');
 
 window.startN2S = function () {
-    var str = document.getElementById('input1').value;
-    obj.initialize();
-    eventManager.initialize();
-    obj.splitIntoArray(str);
+  var str = document.getElementById('input1').value;
+  obj.initialize();
+  eventManager.initialize();
+  obj.splitIntoArray(str);
 };
 
 module.exports = Identifier;
@@ -1570,43 +1570,43 @@ var suffixPrefixObj = new SuffixPrefix();
 var replaceObj = new Replace();
 
 var Decider = function (_Cleaner) {
-    _inherits(Decider, _Cleaner);
+  _inherits(Decider, _Cleaner);
 
-    function Decider() {
-        _classCallCheck(this, Decider);
+  function Decider() {
+    _classCallCheck(this, Decider);
 
-        var _this = _possibleConstructorReturn(this, (Decider.__proto__ || Object.getPrototypeOf(Decider)).call(this));
+    var _this = _possibleConstructorReturn(this, (Decider.__proto__ || Object.getPrototypeOf(Decider)).call(this));
 
-        _this.text = '';
-        return _this;
+    _this.text = '';
+    return _this;
+  }
+
+  _createClass(Decider, [{
+    key: 'decide',
+    value: function decide(word, pos) {
+      // console.log('Decider');
+      if (word === undefined) {
+        return false;
+      }
+      this.text = word;
+
+      var temp = this.clean(this.text);
+      // let arr=this.fetchNumber(temp[0]);
+
+      // console.log(temp[1]);
+      if (specialMiddleObj.isValidSpecialMiddle(temp[1])) {
+        specialMiddleObj.chooseBranch(word, pos);
+      } else if (cardinalObj.isValidCardinal(temp[1])) {
+        cardinalObj.convertCardinal(word, pos);
+      } else if (suffixPrefixObj.isValidSuffixPrefix(temp[1])) {
+        suffixPrefixObj.chooseBranch(word, pos);
+      } else {
+        replaceObj.doReplace(word, pos);
+      }
     }
+  }]);
 
-    _createClass(Decider, [{
-        key: 'decide',
-        value: function decide(word, pos) {
-            // console.log('Decider');
-            if (word === undefined) {
-                return false;
-            }
-            this.text = word;
-
-            var temp = this.clean(this.text);
-            // let arr=this.fetchNumber(temp[0]);
-
-            // console.log(temp[1]);
-            if (specialMiddleObj.isValidSpecialMiddle(temp[1])) {
-                specialMiddleObj.chooseBranch(word, pos);
-            } else if (cardinalObj.isValidCardinal(temp[1])) {
-                cardinalObj.convertCardinal(word, pos);
-            } else if (suffixPrefixObj.isValidSuffixPrefix(temp[1])) {
-                suffixPrefixObj.chooseBranch(word, pos);
-            } else {
-                replaceObj.doReplace(word, pos);
-            }
-        }
-    }]);
-
-    return Decider;
+  return Decider;
 }(Cleaner);
 
 module.exports = Decider;
@@ -1634,60 +1634,59 @@ var numberToWordObj = new NumberToWord();
 var replaceObj = new Replace();
 
 var Cardinal = function (_Cleaner) {
-    _inherits(Cardinal, _Cleaner);
+  _inherits(Cardinal, _Cleaner);
 
-    function Cardinal() {
-        _classCallCheck(this, Cardinal);
+  function Cardinal() {
+    _classCallCheck(this, Cardinal);
 
-        var _this = _possibleConstructorReturn(this, (Cardinal.__proto__ || Object.getPrototypeOf(Cardinal)).call(this));
+    var _this = _possibleConstructorReturn(this, (Cardinal.__proto__ || Object.getPrototypeOf(Cardinal)).call(this));
 
-        _this.text = '';
-        return _this;
+    _this.text = '';
+    return _this;
+  }
+
+  _createClass(Cardinal, [{
+    key: 'setCardinal',
+    value: function setCardinal(_str) {
+      if (_str === undefined) {
+        return false;
+      }
+      this.text = _str;
+      return true;
     }
+  }, {
+    key: 'getCardinal',
+    value: function getCardinal() {
+      return this.text;
+    }
+  }, {
+    key: 'isValidCardinal',
+    value: function isValidCardinal(_str) {
+      var a = this.setCardinal(_str);
 
-    _createClass(Cardinal, [{
-        key: 'setCardinal',
-        value: function setCardinal(_str) {
-            if (_str === undefined) {
-                return false;
-            }
-            this.text = _str;
-            return true;
+      var i = void 0;
+      for (i = 0; i < _str.length; i++) {
+        if (isNaN(parseInt(_str.substr(i, 1)))) {
+          return false;
         }
-    }, {
-        key: 'getCardinal',
-        value: function getCardinal() {
-            return this.text;
-        }
-    }, {
-        key: 'isValidCardinal',
-        value: function isValidCardinal(_str) {
-            var a = this.setCardinal(_str);
+      }
+      return true && a;
+    }
+  }, {
+    key: 'convertCardinal',
+    value: function convertCardinal(_str, pos) {
+      // console.log('cardinal');
+      if (_str === undefined) {
+        return;
+      }
+      var temp = this.clean(_str);
+      _str = temp[1];
+      var cardinal = numberToWordObj.convert(_str);
+      replaceObj.doReplace(cardinal, pos);
+    }
+  }]);
 
-            var i = void 0,
-                j = void 0;
-            for (i = 0; i < _str.length; i++) {
-                if (isNaN(parseInt(_str.substr(i, 1)))) {
-                    return false;
-                }
-            }
-            return true && a;
-        }
-    }, {
-        key: 'convertCardinal',
-        value: function convertCardinal(_str, pos) {
-            // console.log('cardinal');
-            if (_str === undefined) {
-                return;
-            }
-            var temp = this.clean(_str);
-            _str = temp[1];
-            var cardinal = numberToWordObj.convert(_str);
-            replaceObj.doReplace(cardinal, pos);
-        }
-    }]);
-
-    return Cardinal;
+  return Cardinal;
 }(Cleaner);
 
 module.exports = Cardinal;
@@ -1722,70 +1721,70 @@ var decimalOrFractionObj = new DecimalOrFraction();
 var phoneObj = new Phone();
 
 var SpecialMiddle = function (_Cleaner) {
-    _inherits(SpecialMiddle, _Cleaner);
+  _inherits(SpecialMiddle, _Cleaner);
 
-    function SpecialMiddle() {
-        _classCallCheck(this, SpecialMiddle);
+  function SpecialMiddle() {
+    _classCallCheck(this, SpecialMiddle);
 
-        var _this = _possibleConstructorReturn(this, (SpecialMiddle.__proto__ || Object.getPrototypeOf(SpecialMiddle)).call(this));
+    var _this = _possibleConstructorReturn(this, (SpecialMiddle.__proto__ || Object.getPrototypeOf(SpecialMiddle)).call(this));
 
-        _this.text = '';
-        _this.format = /^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{2,4}$|^\d+(\.)\d+$|^\d+(\/)\d+$|^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){0,1}$|^\d{10}$|^\+\d{1,2}\-\d{10}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
-        return _this;
+    _this.text = '';
+    _this.format = /^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{2,4}$|^\d+(\.)\d+$|^\d+(\/)\d+$|^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){0,1}$|^\d{10}$|^\+\d{1,2}\-\d{10}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
+    return _this;
+  }
+
+  _createClass(SpecialMiddle, [{
+    key: 'getText',
+    value: function getText() {
+      return this.text;
     }
+  }, {
+    key: 'setText',
+    value: function setText(_str) {
+      if (_str === undefined) {
+        return false;
+      }
+      this.text = _str;
+      return true;
+    }
+  }, {
+    key: 'isValidSpecialMiddle',
+    value: function isValidSpecialMiddle(_str) {
+      var a = this.setText(_str);
+      var b = _str.match(this.format);
+      if (a === false || b === null) {
+        return false;
+      }
+      return true;
+    }
+  }, {
+    key: 'chooseBranch',
+    value: function chooseBranch(word, pos) {
+      // console.log('specialMiddle');
+      if (word === undefined) {
+        return false;
+      }
 
-    _createClass(SpecialMiddle, [{
-        key: 'getText',
-        value: function getText() {
-            return this.text;
+      var temp = this.clean(word);
+      temp[1] = temp[1].trim();
+      // console.log(temp[1]);
+      if (decimalOrFractionObj.isValidDecimalOrFraction(temp[1])) {
+        if (decimalOrFractionObj.isDecimal(temp[1])) {
+          decimalOrFractionObj.convertToDecimal(word, pos);
+        } else if (decimalOrFractionObj.isFraction(temp[1])) {
+          decimalOrFractionObj.convertToFraction(word, pos);
         }
-    }, {
-        key: 'setText',
-        value: function setText(_str) {
-            if (_str === undefined) {
-                return false;
-            }
-            this.text = _str;
-            return true;
-        }
-    }, {
-        key: 'isValidSpecialMiddle',
-        value: function isValidSpecialMiddle(_str) {
-            var a = this.setText(_str);
-            var b = _str.match(this.format);
-            if (a === false || b === null) {
-                return false;
-            }
-            return true;
-        }
-    }, {
-        key: 'chooseBranch',
-        value: function chooseBranch(word, pos) {
-            // console.log('specialMiddle');
-            if (word === undefined) {
-                return false;
-            }
+      } else if (cTimeObj.isValidTime(temp[1])) {
+        cTimeObj.convertTime(word, pos);
+      } else if (cDateObj.isValidDate(temp[1])) {
+        cDateObj.convertDate(word, pos);
+      } else if (phoneObj.isValidPhone(temp[1])) {
+        phoneObj.convertPhone(word, pos);
+      }
+    }
+  }]);
 
-            var temp = this.clean(word);
-            temp[1] = temp[1].trim();
-            // console.log(temp[1]);
-            if (decimalOrFractionObj.isValidDecimalOrFraction(temp[1])) {
-                if (decimalOrFractionObj.isDecimal(temp[1])) {
-                    decimalOrFractionObj.convertToDecimal(word, pos);
-                } else if (decimalOrFractionObj.isFraction(temp[1])) {
-                    decimalOrFractionObj.convertToFraction(word, pos);
-                }
-            } else if (cTimeObj.isValidTime(temp[1])) {
-                cTimeObj.convertTime(word, pos);
-            } else if (cDateObj.isValidDate(temp[1])) {
-                cDateObj.convertDate(word, pos);
-            } else if (phoneObj.isValidPhone(temp[1])) {
-                phoneObj.convertPhone(word, pos);
-            }
-        }
-    }]);
-
-    return SpecialMiddle;
+  return SpecialMiddle;
 }(Cleaner);
 
 module.exports = SpecialMiddle;
@@ -1813,141 +1812,135 @@ var numberToWordObj = new NumberToWord();
 var replaceObj = new Replace();
 
 var cDate = function (_Cleaner) {
-    _inherits(cDate, _Cleaner);
+  _inherits(cDate, _Cleaner);
 
-    function cDate() {
-        _classCallCheck(this, cDate);
+  function cDate() {
+    _classCallCheck(this, cDate);
 
-        var _this = _possibleConstructorReturn(this, (cDate.__proto__ || Object.getPrototypeOf(cDate)).call(this));
+    var _this = _possibleConstructorReturn(this, (cDate.__proto__ || Object.getPrototypeOf(cDate)).call(this));
 
-        _this.text = '';
-        _this.dd = '';
-        _this.mm = '';
-        _this.yy = '';
-        _this.dateFormat = /^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{2,4}$/g;
-        _this.months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        return _this;
+    _this.text = '';
+    _this.dd = '';
+    _this.mm = '';
+    _this.yy = '';
+    _this.dateFormat = /^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{2,4}$/g;
+    _this.months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return _this;
+  }
+
+  _createClass(cDate, [{
+    key: 'setDate',
+    value: function setDate(_str) {
+      if (_str === undefined) {
+        // console.log('Date cannot be undefined');
+        return false;
+      }
+      this.text = _str;
+      return true;
     }
+  }, {
+    key: 'getDate',
+    value: function getDate() {
+      return this.text;
+    }
+  }, {
+    key: 'belong',
+    value: function belong(c) {
+      if (c === '.' || c === '/' || c === '-') {
+        return true;
+      }
+      return false;
+    }
+  }, {
+    key: 'isValidDate',
+    value: function isValidDate(_str) {
+      var a = this.setDate(_str.trim());
+      var b = _str.match(this.dateFormat);
 
-    _createClass(cDate, [{
-        key: 'setDate',
-        value: function setDate(_str) {
-            if (_str === undefined) {
-                // console.log('Date cannot be undefined');
-                return false;
-            }
-            this.text = _str;
-            return true;
+      if (a === false || b === null) {
+        return false;
+      }
+      return true;
+    }
+  }, {
+    key: 'convertDate',
+    value: function convertDate(_str, pos) {
+      // console.log('Date');
+      if (_str === undefined) {
+        return;
+      }
+      var word = _str;
+      var temp = this.clean(_str);
+      _str = temp[1];
+      this.setDate(_str);
+      // console.log(_str);
+      var breakPoints = [];
+      var i = void 0,
+          k = void 0;
+      for (i = 0; i < this.text.length; i++) {
+        if (this.belong(this.text.charAt(i))) {
+          breakPoints.push(i);
         }
-    }, {
-        key: 'getDate',
-        value: function getDate() {
-            return this.text;
+      }
+      var checkDD = this.text.substr(0, breakPoints[0]);
+      var checkMM = this.text.substr(breakPoints[0] + 1, breakPoints[1] - breakPoints[0] - 1);
+      var checkYY = this.text.substr(breakPoints[1] + 1, this.text.length - 1 - breakPoints[1]);
+
+      var checkD = parseInt(checkDD);
+      var checkM = parseInt(checkMM);
+      var checkY = parseInt(checkYY);
+
+      if (isNaN(checkD) || isNaN(checkM) || isNaN(checkY)) {
+        replaceObj.doReplace(word, pos);
+        return;
+      } else if (checkM < 1 || checkM > 12 || checkD < 1 || checkD > 31) {
+        replaceObj.doReplace(word, pos);
+        return;
+      } else if (checkM === 4 || checkM === 6 || checkM === 9 || checkM === 11) {
+        if (checkD > 30) {
+          replaceObj.doReplace(word, pos);
+          return;
         }
-    }, {
-        key: 'belong',
-        value: function belong(c) {
-            if (c === '.' || c === '/' || c === '-') {
-                return true;
-            }
-            return false;
+      } else if (checkM === 2 && checkY % 4 !== 0) {
+        if (checkD > 28) {
+          replaceObj.doReplace(word, pos);
+          return;
         }
-    }, {
-        key: 'isValidDate',
-        value: function isValidDate(_str) {
-            var a = this.setDate(_str.trim());
-            var b = _str.match(this.dateFormat);
-
-            if (a === false || b === null) {
-                return false;
-            }
-            return true;
+      } else if (checkM === 2 && checkY % 4 === 0) {
+        if (checkD > 29) {
+          replaceObj.doReplace(word, pos);
+          return;
         }
-    }, {
-        key: 'convertDate',
-        value: function convertDate(_str, pos) {
-            // console.log('Date');
-            if (_str == undefined) {
-                return;
-            }
-            var word = _str;
-            var temp = this.clean(_str);
-            _str = temp[1];
-            if (!this.setDate(_str)) {
-                replaceObj.doReplace(_str, pos);
-                return;
-            }
-            // console.log(_str);
-            var breakPoints = [];
-            var i = void 0,
-                j = 0,
-                k = void 0;
-            for (i = 0; i < this.text.length; i++) {
-                if (this.belong(this.text.charAt(i))) {
-                    breakPoints.push(i);
-                }
-            }
-            var checkDD = this.text.substr(0, breakPoints[0]);
-            var checkMM = this.text.substr(breakPoints[0] + 1, breakPoints[1] - breakPoints[0] - 1);
-            var checkYY = this.text.substr(breakPoints[1] + 1, this.text.length - 1 - breakPoints[1]);
+      }
 
-            var checkD = parseInt(checkDD);
-            var checkM = parseInt(checkMM);
-            var checkY = parseInt(checkYY);
-
-            if (isNaN(checkD) || isNaN(checkM) || isNaN(checkY)) {
-                replaceObj.doReplace(word, pos);
-                return;
-            } else if (checkM < 1 || checkM > 12 || checkD < 1 || checkD > 31) {
-                replaceObj.doReplace(word, pos);
-                return;
-            } else if (checkM === 4 || checkM === 6 || checkM === 9 || checkM === 11) {
-                if (checkD > 30) {
-                    replaceObj.doReplace(word, pos);
-                    return;
-                }
-            } else if (checkM === 2 && checkY % 4 !== 0) {
-                if (checkD > 28) {
-                    replaceObj.doReplace(word, pos);
-                    return;
-                }
-            } else if (checkM === 2 && checkY % 4 === 0) {
-                if (checkD > 29) {
-                    replaceObj.doReplace(word, pos);
-                    return;
-                }
-            }
-
-            if (checkYY.length === 2) {
-                if (checkY <= 50) {
-                    checkYY = '20' + checkYY;
-                } else {
-                    console.log(checkYY);
-                    checkYY = '19' + checkYY;
-                    console.log(checkYY);
-                }
-            } else if (checkYY.length === 3) {
-                checkYY = '2' + checkYY;
-            }
-
-            var d = numberToWordObj.convert(checkDD);
-            var m = numberToWordObj.convert(checkMM);
-            var y = numberToWordObj.convert(checkYY);
-
-            var daySplit = d.split(' ');
-            k = daySplit.pop();
-            daySplit.push(numberToWordObj.findEquivalentOrdinal(k));
-            d = '';
-
-            for (i = 0; i < daySplit.length; i++) {
-                d += daySplit[i] + ' ';
-            }
-            m = this.months[checkM] + ' ';
-            replaceObj.doReplace(temp[0] + d + m + y + [temp[2]], pos);
+      if (checkYY.length === 2) {
+        if (checkY <= 50) {
+          checkYY = '20' + checkYY;
+        } else {
+          checkYY = '19' + checkYY;
         }
-    }]);
+      } else if (checkYY.length === 3) {
+        checkYY = '2' + checkYY;
+      }
 
-    return cDate;
+      var d = numberToWordObj.convert(checkDD);
+      var m = numberToWordObj.convert(checkMM);
+      var y = numberToWordObj.convert(checkYY);
+
+      var daySplit = d.split(' ');
+      k = daySplit.pop();
+      daySplit.push(numberToWordObj.findEquivalentOrdinal(k));
+      d = '';
+
+      for (i = 0; i < daySplit.length; i++) {
+        d += daySplit[i] + ' ';
+      }
+      m = this.months[checkM] + ' ';
+      replaceObj.doReplace(temp[0] + d + m + y + [temp[2]], pos);
+    }
+  }]);
+
+  return cDate;
 }(Cleaner);
 
 module.exports = cDate;
@@ -1978,81 +1971,81 @@ var fractionObj = new Fraction();
 var decimalObj = new Decimal();
 
 var DecimalOrFraction = function (_Cleaner) {
-    _inherits(DecimalOrFraction, _Cleaner);
+  _inherits(DecimalOrFraction, _Cleaner);
 
-    function DecimalOrFraction() {
-        _classCallCheck(this, DecimalOrFraction);
+  function DecimalOrFraction() {
+    _classCallCheck(this, DecimalOrFraction);
 
-        var _this = _possibleConstructorReturn(this, (DecimalOrFraction.__proto__ || Object.getPrototypeOf(DecimalOrFraction)).call(this));
+    var _this = _possibleConstructorReturn(this, (DecimalOrFraction.__proto__ || Object.getPrototypeOf(DecimalOrFraction)).call(this));
 
-        _this.text = '';
-        _this.format = /^\d+(\.)\d+$|^\d+(\/)\d+$/g;
-        _this.decimalFormat = /^\d+(\.)\d+$/g;
-        _this.fractionFormat = /^\d+(\/)\d+$/g;
-        return _this;
+    _this.text = '';
+    _this.format = /^\d+(\.)\d+$|^\d+(\/)\d+$/g;
+    _this.decimalFormat = /^\d+(\.)\d+$/g;
+    _this.fractionFormat = /^\d+(\/)\d+$/g;
+    return _this;
+  }
+
+  _createClass(DecimalOrFraction, [{
+    key: 'getText',
+    value: function getText() {
+      return this.text;
     }
+  }, {
+    key: 'setText',
+    value: function setText(_str) {
+      if (_str === undefined) {
+        // console.log('Text cannot be undefined.');
+        return false;
+      }
+      this.text = _str;
+      return true;
+    }
+  }, {
+    key: 'isValidDecimalOrFraction',
+    value: function isValidDecimalOrFraction(_str) {
+      this.setText(_str);
+      var a = this.setText(_str);
+      var b = this.text.match(this.format);
+      if (b === null || a === false) {
+        return false;
+      }
+      return true;
+    }
+  }, {
+    key: 'isDecimal',
+    value: function isDecimal(_str) {
+      this.setText(_str);
+      var b = this.text.match(this.decimalFormat);
+      if (b !== null && b.length === 1) {
+        return true;
+      }
+      return false;
+    }
+  }, {
+    key: 'isFraction',
+    value: function isFraction(_str) {
+      this.setText(_str);
+      var b = this.text.match(this.fractionFormat);
+      if (b !== null && b.length === 1) {
+        return true;
+      }
+      return false;
+    }
+  }, {
+    key: 'convertToDecimal',
+    value: function convertToDecimal(word, pos) {
+      // console.log('DecimalOrFraction');
+      var convertedText = decimalObj.convertDecimal(word, pos);
+    }
+  }, {
+    key: 'convertToFraction',
+    value: function convertToFraction(word, pos) {
+      // console.log('DecimalOrFraction');
+      var convertedText = fractionObj.convertFraction(word, pos);
+    }
+  }]);
 
-    _createClass(DecimalOrFraction, [{
-        key: 'getText',
-        value: function getText() {
-            return this.text;
-        }
-    }, {
-        key: 'setText',
-        value: function setText(_str) {
-            if (_str === undefined) {
-                // console.log('Text cannot be undefined.');
-                return false;
-            }
-            this.text = _str;
-            return true;
-        }
-    }, {
-        key: 'isValidDecimalOrFraction',
-        value: function isValidDecimalOrFraction(_str) {
-            this.setText(_str);
-            var a = this.setText(_str);
-            var b = this.text.match(this.format);
-            if (b === null || a === false) {
-                return false;
-            }
-            return true;
-        }
-    }, {
-        key: 'isDecimal',
-        value: function isDecimal(_str) {
-            this.setText(_str);
-            var b = this.text.match(this.decimalFormat);
-            if (b !== null && b.length === 1) {
-                return true;
-            }
-            return false;
-        }
-    }, {
-        key: 'isFraction',
-        value: function isFraction(_str) {
-            this.setText(_str);
-            var b = this.text.match(this.fractionFormat);
-            if (b !== null && b.length === 1) {
-                return true;
-            }
-            return false;
-        }
-    }, {
-        key: 'convertToDecimal',
-        value: function convertToDecimal(word, pos) {
-            // console.log('DecimalOrFraction');
-            var convertedText = decimalObj.convertDecimal(word, pos);
-        }
-    }, {
-        key: 'convertToFraction',
-        value: function convertToFraction(word, pos) {
-            // console.log('DecimalOrFraction');
-            var convertedText = fractionObj.convertFraction(word, pos);
-        }
-    }]);
-
-    return DecimalOrFraction;
+  return DecimalOrFraction;
 }(Cleaner);
 
 module.exports = DecimalOrFraction;
@@ -2080,63 +2073,63 @@ var numberToWord = new NumberToWord();
 var replaceObj = new Replace();
 
 var Fraction = function (_Cleaner) {
-    _inherits(Fraction, _Cleaner);
+  _inherits(Fraction, _Cleaner);
 
-    function Fraction() {
-        _classCallCheck(this, Fraction);
+  function Fraction() {
+    _classCallCheck(this, Fraction);
 
-        var _this = _possibleConstructorReturn(this, (Fraction.__proto__ || Object.getPrototypeOf(Fraction)).call(this));
+    var _this = _possibleConstructorReturn(this, (Fraction.__proto__ || Object.getPrototypeOf(Fraction)).call(this));
 
-        _this.fraction = '';
-        _this.fractionFormat = /^\d+(\/)\d+$/g;
-        return _this;
+    _this.fraction = '';
+    _this.fractionFormat = /^\d+(\/)\d+$/g;
+    return _this;
+  }
+
+  _createClass(Fraction, [{
+    key: 'setFraction',
+    value: function setFraction(str) {
+      if (str === undefined) {
+        return false;
+      }
+      this.fraction = str.trim();
+      return true;
     }
+  }, {
+    key: 'getFraction',
+    value: function getFraction() {
+      return this.fraction;
+    }
+  }, {
+    key: 'isFraction',
+    value: function isFraction(str) {
+      var a = this.setFraction(str);
+      var b = str.match(this.fractionFormat);
+      if (a === false || b === null) {
+        return false;
+      }
+      return true;
+    }
+  }, {
+    key: 'convertFraction',
+    value: function convertFraction(str, pos) {
+      // console.log('fraction');
+      if (str === undefined) {
+        return;
+      }
 
-    _createClass(Fraction, [{
-        key: 'setFraction',
-        value: function setFraction(str) {
-            if (str === undefined) {
-                return false;
-            }
-            this.fraction = str.trim();
-            return true;
-        }
-    }, {
-        key: 'getFraction',
-        value: function getFraction() {
-            return this.fraction;
-        }
-    }, {
-        key: 'isFraction',
-        value: function isFraction(str) {
-            var a = this.setFraction(str);
-            var b = str.match(this.fractionFormat);
-            if (a === false || b === null) {
-                return false;
-            }
-            return true;
-        }
-    }, {
-        key: 'convertFraction',
-        value: function convertFraction(str, pos) {
-            // console.log('fraction');
-            if (str === undefined) {
-                return;
-            }
+      var temp = this.clean(str);
+      str = temp[1];
+      var parts = str.split('/');
 
-            var temp = this.clean(str);
-            str = temp[1];
-            var parts = str.split('/');
+      var numerator = numberToWord.convert(parts[0]);
+      var denominator = numberToWord.convert(parts[1]);
 
-            var numerator = numberToWord.convert(parts[0]);
-            var denominator = numberToWord.convert(parts[1]);
+      var finalStr = numerator + '/' + denominator;
+      replaceObj.doReplace(temp[0] + finalStr.trim() + temp[2], pos);
+    }
+  }]);
 
-            var finalStr = numerator + '/' + denominator;
-            replaceObj.doReplace(temp[0] + finalStr.trim() + temp[2], pos);
-        }
-    }]);
-
-    return Fraction;
+  return Fraction;
 }(Cleaner);
 
 module.exports = Fraction;
@@ -2167,69 +2160,68 @@ var numberToWord = new NumberToWord();
 var replaceObj = new Replace();
 
 var Decimal = function (_Cleaner) {
-    _inherits(Decimal, _Cleaner);
+  _inherits(Decimal, _Cleaner);
 
-    function Decimal() {
-        _classCallCheck(this, Decimal);
+  function Decimal() {
+    _classCallCheck(this, Decimal);
 
-        var _this = _possibleConstructorReturn(this, (Decimal.__proto__ || Object.getPrototypeOf(Decimal)).call(this));
+    var _this = _possibleConstructorReturn(this, (Decimal.__proto__ || Object.getPrototypeOf(Decimal)).call(this));
 
-        _this.decimal = '';
-        _this.decimalFormat = /^\d+(\.)\d+$/g;
-        return _this;
+    _this.decimal = '';
+    _this.decimalFormat = /^\d+(\.)\d+$/g;
+    return _this;
+  }
+
+  _createClass(Decimal, [{
+    key: 'setDecimal',
+    value: function setDecimal(str) {
+      if (str === undefined) {
+        // console.log('Decimal cannot be undefined');
+        return false;
+      }
+      this.decimal = str;
+      return true;
     }
+  }, {
+    key: 'getDecimal',
+    value: function getDecimal() {
+      return this.decimal;
+    }
+  }, {
+    key: 'isDecimal',
+    value: function isDecimal(str) {
+      var a = this.setDecimal(str);
+      var b = this.decimal.match(this.decimalFormat);
+      if (a === false || b === null) {
+        return false;
+      }
+      return true;
+    }
+  }, {
+    key: 'convertDecimal',
+    value: function convertDecimal(str, pos) {
+      // console.log('decimal');
+      if (str === undefined) {
+        return;
+      }
+      var temp = this.clean(str);
+      str = temp[1];
 
-    _createClass(Decimal, [{
-        key: 'setDecimal',
-        value: function setDecimal(str) {
-            if (str === undefined) {
-                // console.log('Decimal cannot be undefined');
-                return false;
-            }
-            this.decimal = str;
-            return true;
-        }
-    }, {
-        key: 'getDecimal',
-        value: function getDecimal() {
-            return this.decimal;
-        }
-    }, {
-        key: 'isDecimal',
-        value: function isDecimal(str) {
-            var a = this.setDecimal(str);
-            var b = this.decimal.match(this.decimalFormat);
-            if (a === false || b === null) {
-                return false;
-            }
-            return true;
-        }
-    }, {
-        key: 'convertDecimal',
-        value: function convertDecimal(str, pos) {
-            // console.log('decimal');
-            if (str === undefined) {
-                return;
-            }
-            var temp = this.clean(str);
-            str = temp[1];
+      var decimalAr = str.split('.');
 
-            var decimalAr = str.split('.');
+      var beforePoint = numberToWord.convert(decimalAr[0]);
+      var afterPoint = '';
 
-            var beforePoint = numberToWord.convert(decimalAr[0]);
-            var afterPoint = '';
+      var i = void 0;
+      for (i = 0; i < decimalAr[1].length; i++) {
+        afterPoint += numberToWord.convert(decimalAr[1].charAt(i)) + ' ';
+      }
 
-            var i = void 0,
-                j = void 0;
-            for (i = 0; i < decimalAr[1].length; i++) {
-                afterPoint += numberToWord.convert(decimalAr[1].charAt(i)) + ' ';
-            }
+      replaceObj.doReplace(temp[0] + beforePoint + '.' + afterPoint.trim() + temp[2], pos);
+    }
+  }]);
 
-            replaceObj.doReplace(temp[0] + beforePoint + '.' + afterPoint.trim() + temp[2], pos);
-        }
-    }]);
-
-    return Decimal;
+  return Decimal;
 }(Cleaner);
 
 module.exports = Decimal;
@@ -2259,70 +2251,70 @@ var numberToWordObj = new NumberToWord();
 var replaceObj = new Replace();
 
 var Phone = function (_Cleaner) {
-    _inherits(Phone, _Cleaner);
+  _inherits(Phone, _Cleaner);
 
-    function Phone() {
-        _classCallCheck(this, Phone);
+  function Phone() {
+    _classCallCheck(this, Phone);
 
-        var _this = _possibleConstructorReturn(this, (Phone.__proto__ || Object.getPrototypeOf(Phone)).call(this));
+    var _this = _possibleConstructorReturn(this, (Phone.__proto__ || Object.getPrototypeOf(Phone)).call(this));
 
-        _this.text = '';
-        _this.phoneFormat = /^\d{10}$|^\+\d{1,2}\-\d{10}$/g;
-        return _this;
+    _this.text = '';
+    _this.phoneFormat = /^\d{10}$|^\+\d{1,2}\-\d{10}$/g;
+    return _this;
+  }
+
+  _createClass(Phone, [{
+    key: 'getPhone',
+    value: function getPhone() {
+      return this.text;
     }
+  }, {
+    key: 'setPhone',
+    value: function setPhone(_str) {
+      if (_str === undefined) {
+        return false;
+      }
+      this.text = _str;
+      return true;
+    }
+  }, {
+    key: 'isValidPhone',
+    value: function isValidPhone(_str) {
+      var a = this.setPhone(_str);
+      var b = _str.match(this.phoneFormat);
+      if (a === false || b === null) {
+        return false;
+      }
+      return true;
+    }
+  }, {
+    key: 'convertPhone',
+    value: function convertPhone(_str, pos) {
+      // console.log('phone');
+      if (_str === undefined) {
+        return _str;
+      }
+      var temp = this.clean(_str);
+      _str = temp[1];
 
-    _createClass(Phone, [{
-        key: 'getPhone',
-        value: function getPhone() {
-            return this.text;
+      var i = void 0,
+          j = void 0,
+          k = void 0,
+          finalStr = '';
+      // if (_str.charAt(0) === '+') {
+      //     finalStr = '+';
+      // }
+      for (i = 0; i < _str.length; i++) {
+        // console.log(_str.substr(i, 1));
+        if (!isNaN(parseInt(_str.substr(i, 1)))) {
+          finalStr += numberToWordObj.convert(_str.substr(i, 1)) + ' ';
         }
-    }, {
-        key: 'setPhone',
-        value: function setPhone(_str) {
-            if (_str === undefined) {
-                return false;
-            }
-            this.text = _str;
-            return true;
-        }
-    }, {
-        key: 'isValidPhone',
-        value: function isValidPhone(_str) {
-            var a = this.setPhone(_str);
-            var b = _str.match(this.phoneFormat);
-            if (a === false || b === null) {
-                return false;
-            }
-            return true;
-        }
-    }, {
-        key: 'convertPhone',
-        value: function convertPhone(_str, pos) {
-            // console.log('phone');
-            if (_str === undefined) {
-                return _str;
-            }
-            var temp = this.clean(_str);
-            _str = temp[1];
+      }
+      replaceObj.doReplace(temp[0] + finalStr.trim() + temp[2], pos);
+    }
+  }]);
 
-            var i = void 0,
-                j = void 0,
-                k = void 0,
-                finalStr = '';
-            // if (_str.charAt(0) === '+') {
-            //     finalStr = '+';
-            // }
-            for (i = 0; i < _str.length; i++) {
-                // console.log(_str.substr(i, 1));
-                if (!isNaN(parseInt(_str.substr(i, 1)))) {
-                    finalStr += numberToWordObj.convert(_str.substr(i, 1)) + ' ';
-                }
-            }
-            replaceObj.doReplace(temp[0] + finalStr.trim() + temp[2], pos);
-        }
-    }]);
-
-    return Phone;
+  return Phone;
 }(Cleaner);
 
 module.exports = Phone;
@@ -2357,62 +2349,62 @@ var replaceObj = new Replace();
 var weightObj = new Weight();
 
 var SuffixPrefix = function (_Cleaner) {
-    _inherits(SuffixPrefix, _Cleaner);
+  _inherits(SuffixPrefix, _Cleaner);
 
-    function SuffixPrefix() {
-        _classCallCheck(this, SuffixPrefix);
+  function SuffixPrefix() {
+    _classCallCheck(this, SuffixPrefix);
 
-        var _this = _possibleConstructorReturn(this, (SuffixPrefix.__proto__ || Object.getPrototypeOf(SuffixPrefix)).call(this));
+    var _this = _possibleConstructorReturn(this, (SuffixPrefix.__proto__ || Object.getPrototypeOf(SuffixPrefix)).call(this));
 
-        _this.text = '';
-        _this.suffixPrefixFormat = /^\d+([a-zA-Z]+|%)$|^([a-zA-Z]+.|$)+\d+$|^\d+((\.){1}\d+){0,1}(Kg|kg|Kgs|kgs|g)$/g;
-        return _this;
+    _this.text = '';
+    _this.suffixPrefixFormat = /^\d+([a-zA-Z]+|%)$|^([a-zA-Z]+.|$)+\d+$|^\d+((\.){1}\d+){0,1}(Kg|kg|Kgs|kgs|g)$/g;
+    return _this;
+  }
+
+  _createClass(SuffixPrefix, [{
+    key: 'setText',
+    value: function setText(_str) {
+      if (_str === undefined) {
+        return false;
+      }
+      this.text = _str;
+      return true;
     }
+  }, {
+    key: 'getText',
+    value: function getText() {
+      return this.text;
+    }
+  }, {
+    key: 'isValidSuffixPrefix',
+    value: function isValidSuffixPrefix(_str) {
+      _str = this.clean(_str)[1];
+      if (this.setText(_str) && _str.match(this.suffixPrefixFormat) !== null) {
+        return true;
+      }
+      return false;
+    }
+  }, {
+    key: 'chooseBranch',
+    value: function chooseBranch(word, pos) {
+      // console.log('suffixPrefix');
+      if (!this.isValidSuffixPrefix(word)) {
+        return false;
+      }
 
-    _createClass(SuffixPrefix, [{
-        key: 'setText',
-        value: function setText(_str) {
-            if (_str === undefined) {
-                return false;
-            }
-            this.text = _str;
-            return true;
-        }
-    }, {
-        key: 'getText',
-        value: function getText() {
-            return this.text;
-        }
-    }, {
-        key: 'isValidSuffixPrefix',
-        value: function isValidSuffixPrefix(_str) {
-            _str = this.clean(_str)[1];
-            if (this.setText(_str) && _str.match(this.suffixPrefixFormat) !== null) {
-                return true;
-            }
-            return false;
-        }
-    }, {
-        key: 'chooseBranch',
-        value: function chooseBranch(word, pos) {
-            // console.log('suffixPrefix');
-            if (!this.isValidSuffixPrefix(word)) {
-                return false;
-            }
+      var temp = this.clean(word);
+      // console.log(temp[1]);
+      if (ordinalToCardinalObj.isValidOrdinal(temp[1])) {
+        ordinalToCardinalObj.convertOrdinal(word, pos);
+      } else if (weightObj.isValidWeight(temp[1])) {
+        weightObj.convertWeight(word, pos);
+      } else {
+        replaceObj.doReplace(word, pos);
+      }
+    }
+  }]);
 
-            var temp = this.clean(word);
-            // console.log(temp[1]);
-            if (ordinalToCardinalObj.isValidOrdinal(temp[1])) {
-                ordinalToCardinalObj.convertOrdinal(word, pos);
-            } else if (weightObj.isValidWeight(temp[1])) {
-                weightObj.convertWeight(word, pos);
-            } else {
-                replaceObj.doReplace(word, pos);
-            }
-        }
-    }]);
-
-    return SuffixPrefix;
+  return SuffixPrefix;
 }(Cleaner);
 
 module.exports = SuffixPrefix;
@@ -2440,79 +2432,79 @@ var replaceObj = new Replace();
 var numberToWordObj = new NumberToWord();
 
 var OrdinalToCardinal = function (_Cleaner) {
-    _inherits(OrdinalToCardinal, _Cleaner);
+  _inherits(OrdinalToCardinal, _Cleaner);
 
-    function OrdinalToCardinal() {
-        _classCallCheck(this, OrdinalToCardinal);
+  function OrdinalToCardinal() {
+    _classCallCheck(this, OrdinalToCardinal);
 
-        var _this = _possibleConstructorReturn(this, (OrdinalToCardinal.__proto__ || Object.getPrototypeOf(OrdinalToCardinal)).call(this));
+    var _this = _possibleConstructorReturn(this, (OrdinalToCardinal.__proto__ || Object.getPrototypeOf(OrdinalToCardinal)).call(this));
 
-        _this.text = '';
-        return _this;
+    _this.text = '';
+    return _this;
+  }
+
+  _createClass(OrdinalToCardinal, [{
+    key: 'getText',
+    value: function getText() {
+      return this.text;
     }
-
-    _createClass(OrdinalToCardinal, [{
-        key: 'getText',
-        value: function getText() {
-            return this.text;
+  }, {
+    key: 'setText',
+    value: function setText(_str) {
+      if (_str === undefined) {
+        return false;
+      }
+      this.text = _str;
+      return true;
+    }
+  }, {
+    key: 'isValidOrdinal',
+    value: function isValidOrdinal(_str) {
+      var a = this.setText(_str);
+      var i = void 0,
+          j = void 0,
+          k = true;
+      for (i = 0; i < _str.length - 2; i++) {
+        if (isNaN(parseInt(_str.substr(i, 1)))) {
+          return false;
         }
-    }, {
-        key: 'setText',
-        value: function setText(_str) {
-            if (_str === undefined) {
-                return false;
-            }
-            this.text = _str;
-            return true;
-        }
-    }, {
-        key: 'isValidOrdinal',
-        value: function isValidOrdinal(_str) {
-            var a = this.setText(_str);
-            var i = void 0,
-                j = void 0,
-                k = true;
-            for (i = 0; i < _str.length - 2; i++) {
-                if (isNaN(parseInt(_str.substr(i, 1)))) {
-                    return false;
-                }
-            }
-            j = _str.substr(_str.length - 2, 2);
-            if (j === 'rd' || j === 'th' || j === 'st' || j === 'nd') {
-                return a;
-            } else return false;
-        }
-    }, {
-        key: 'convertOrdinal',
-        value: function convertOrdinal(word, pos) {
-            // console.log('ordinalToCardinal');
-            if (word === undefined) {
-                return;
-            }
-            var temp = this.clean(word);
-            word = temp[1];
+      }
+      j = _str.substr(_str.length - 2, 2);
+      if (j === 'rd' || j === 'th' || j === 'st' || j === 'nd') {
+        return a;
+      } else return false;
+    }
+  }, {
+    key: 'convertOrdinal',
+    value: function convertOrdinal(word, pos) {
+      // console.log('ordinalToCardinal');
+      if (word === undefined) {
+        return;
+      }
+      var temp = this.clean(word);
+      word = temp[1];
 
-            var i = void 0,
-                j = void 0,
-                k = void 0,
-                finalStr = '';
-            var numString = word.substr(0, word.length - 2),
-                suffix = word.substr(word.length - 2, 2);
+      var i = void 0,
+          j = void 0,
+          k = void 0,
+          finalStr = '';
+      var numString = word.substr(0, word.length - 2),
+          suffix = word.substr(word.length - 2, 2);
 
-            var convertedNumString = numberToWordObj.convert(numString);
-            k = convertedNumString.split(' ');
-            j = k.pop();
-            k.push(numberToWordObj.findEquivalentOrdinal(j));
+      var convertedNumString = numberToWordObj.convert(numString);
+      k = convertedNumString.split(' ');
+      j = k.pop();
+      k.push(numberToWordObj.findEquivalentOrdinal(j));
 
-            for (i = 0; i < k.length; i++) {
-                finalStr += k[i] + ' ';
-            }
-            finalStr = finalStr.trim();
-            replaceObj.doReplace(temp[0] + finalStr + temp[2], pos);
-        }
-    }]);
+      for (i = 0; i < k.length; i++) {
+        finalStr += k[i] + ' ';
+      }
+      finalStr = finalStr.trim();
+      replaceObj.doReplace(temp[0] + finalStr + temp[2], pos);
+    }
+  }]);
 
-    return OrdinalToCardinal;
+  return OrdinalToCardinal;
 }(Cleaner);
 
 module.exports = OrdinalToCardinal;
@@ -2540,79 +2532,79 @@ var replaceObj = new Replace();
 var numberToWordObj = new NumberToWord();
 
 var Weight = function (_Cleaner) {
-    _inherits(Weight, _Cleaner);
+  _inherits(Weight, _Cleaner);
 
-    function Weight() {
-        _classCallCheck(this, Weight);
+  function Weight() {
+    _classCallCheck(this, Weight);
 
-        var _this = _possibleConstructorReturn(this, (Weight.__proto__ || Object.getPrototypeOf(Weight)).call(this));
+    var _this = _possibleConstructorReturn(this, (Weight.__proto__ || Object.getPrototypeOf(Weight)).call(this));
 
-        _this.text = '';
-        _this.format = /^\d+((\.){1}\d+){0,1}(Kg|kg|Kgs|kgs|g)$/g;
-        return _this;
+    _this.text = '';
+    _this.format = /^\d+((\.){1}\d+){0,1}(Kg|kg|Kgs|kgs|g)$/g;
+    return _this;
+  }
+
+  _createClass(Weight, [{
+    key: 'setText',
+    value: function setText(str) {
+      if (str === undefined) {
+        return false;
+      }
+      this.text = str;
+      return true;
     }
+  }, {
+    key: 'getText',
+    value: function getText() {
+      return this.text;
+    }
+  }, {
+    key: 'isValidWeight',
+    value: function isValidWeight(str) {
+      var a = this.setText(str);
+      var b = str.match(this.format);
 
-    _createClass(Weight, [{
-        key: 'setText',
-        value: function setText(str) {
-            if (str === undefined) {
-                return false;
-            }
-            this.text = str;
-            return true;
-        }
-    }, {
-        key: 'getText',
-        value: function getText() {
-            return this.text;
-        }
-    }, {
-        key: 'isValidWeight',
-        value: function isValidWeight(str) {
-            var a = this.setText(str);
-            var b = str.match(this.format);
+      if (a === false || b === null) {
+        return false;
+      }
+      return true;
+    }
+  }, {
+    key: 'fetchNumber',
+    value: function fetchNumber(word) {
+      var j = word.length - 1;
+      while (j >= 0 && isNaN(parseInt(word.substr(j, 1)))) {
+        j--;
+      }
+      return word.substr(0, j + 1);
+    }
+  }, {
+    key: 'convertWeight',
+    value: function convertWeight(word, pos) {
+      if (word === undefined) {
+        return false;
+      }
+      var temp = this.clean(word);
+      word = temp[1];
 
-            if (a === false || b === null) {
-                return false;
-            }
-            return true;
+      var num = this.fetchNumber(word);
+      var numAr = num.split('.');
+      var finalNum = [];
+      finalNum.push(numberToWordObj.convert(numAr[0].trim()));
+      if (numAr.length === 2) {
+        var gram = numAr[1];
+        while (gram.length < 3) {
+          gram += '0';
         }
-    }, {
-        key: 'fetchNumber',
-        value: function fetchNumber(word) {
-            var j = word.length - 1;
-            while (j >= 0 && isNaN(parseInt(word.substr(j, 1)))) {
-                j--;
-            }
-            return word.substr(0, j + 1);
-        }
-    }, {
-        key: 'convertWeight',
-        value: function convertWeight(word, pos) {
-            if (word === undefined) {
-                return false;
-            }
-            var temp = this.clean(word);
-            word = temp[1];
+        finalNum.push(numberToWordObj.convert(gram.trim()));
+        replaceObj.doReplace(temp[0] + finalNum[0] + ' kg ' + finalNum[1] + ' grams' + temp[2], pos);
+      } else {
+        replaceObj.doReplace(temp[0] + finalNum[0] + ' kgs' + temp[2]);
+      }
+    }
+  }]);
 
-            var num = this.fetchNumber(word);
-            var numAr = num.split('.');
-            var finalNum = [];
-            finalNum.push(numberToWordObj.convert(numAr[0].trim()));
-            if (numAr.length === 2) {
-                var gram = numAr[1];
-                while (gram.length < 3) {
-                    gram += '0';
-                }
-                finalNum.push(numberToWordObj.convert(gram.trim()));
-                replaceObj.doReplace(temp[0] + finalNum[0] + ' kg ' + finalNum[1] + ' grams' + temp[2], pos);
-            } else {
-                replaceObj.doReplace(temp[0] + finalNum[0] + ' kgs' + temp[2]);
-            }
-        }
-    }]);
-
-    return Weight;
+  return Weight;
 }(Cleaner);
 
 module.exports = Weight;

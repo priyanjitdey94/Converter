@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "build": "webpack"
+    "build": "webpack",
+    "eslint": "./node_modules/.bin/eslint ./src/*.js --fix"
   },
   "repository": "https://github.com/priyanjitdey94/Converter.git",
   "author": "priyanjitdey94 <priyanjitcareer@gmail.com>",
