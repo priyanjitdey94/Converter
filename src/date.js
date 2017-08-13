@@ -53,10 +53,7 @@ class cDate extends Cleaner {
         let word = _str;
         let temp = this.clean(_str);
         _str = temp[1];
-        if (!this.setDate(_str)) {
-            replaceObj.doReplace(_str, pos);
-            return;
-        }
+        this.setDate(_str);
         // console.log(_str);
         let breakPoints = [];
         let i, j = 0,

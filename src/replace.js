@@ -27,7 +27,7 @@ eventManager.on('finish', (arr) => {
     }, 20);
 });
 
-eventManager.on('done', (arr, obj) => {
+eventManager.on('done', (arr) => {
     eventManager.makeChangesAndPublish(arr);
 });
 

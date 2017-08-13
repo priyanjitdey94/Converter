@@ -1,5 +1,8 @@
 {
   "name": "Converter",
+  "jest": {
+    "transform": {".css": "./node_modules/jest-css-modules"}
+  },
   "version": "0.0.1",
   "description": "Library that converts number fetched from text to string.",
   "main": "index.js",
@@ -27,6 +30,7 @@
     "jasmine-core": "^2.7.0",
     "jest": "^20.0.4",
     "jest-cli": "^20.0.4",
+    "jest-css-modules": "^1.1.0",
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
