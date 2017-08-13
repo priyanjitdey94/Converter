@@ -80,7 +80,7 @@ class cTime extends Cleaner {
         if (word[word.length - 1] === 'm' || word[word.length - 1] === 'M') {
             k = this.fetchNumber(word);
             j = this.actualFormatConversion(k[0]);
-            console.log(k);
+            // console.log(k);
             replaceObj.doReplace(temp[0] + j + temp[2], pos);
         } else {
             replaceObj.doReplace(temp[0] + this.actualFormatConversion(word) + temp[2], pos);

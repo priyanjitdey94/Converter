@@ -35,6 +35,7 @@ class Cardinal extends Cleaner {
     }
 
     convertCardinal(_str, pos) {
+        // console.log('cardinal');
         if (_str === undefined) {
             return;
         }

@@ -9,7 +9,12 @@ class EventManager extends EventEmitter {
         this.modified = [];
         EventEmitter.call(this);
     }
-
+    initialize() {
+        this.taskProcessed = 0;
+        this.taskTobeProcessed = 0;
+        this.processingDone = false;
+        this.modified = [];
+    }
     addTask() {
         this.taskTobeProcessed++;
     }
@@ -37,7 +42,8 @@ class EventManager extends EventEmitter {
                 finalStr += arr[i] + ' ';
             }
         }
-        console.log(finalStr.trim());
+        // console.log(finalStr.trim());
+        document.getElementById('input2').value = finalStr.trim();
     }
 }
 

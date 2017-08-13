@@ -36,6 +36,7 @@ class SuffixPrefix extends Cleaner {
     }
 
     chooseBranch(word, pos) {
+        // console.log('suffixPrefix');
         if (!this.isValidSuffixPrefix(word)) {
             return false;
         }

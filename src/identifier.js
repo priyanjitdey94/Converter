@@ -1,3 +1,4 @@
+const css = require('./assets/css/style.css');
 const eventManager = require('./eventManager.js');
 const Decider = require('./decider.js');
 const Replace = require('./replace.js');
@@ -11,6 +12,10 @@ class Identifier {
         this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']'];
     }
 
+    initialize() {
+        this.text = '';
+        this.splitAr = [];
+    }
     containNumber(word) {
         let reg = /\d+/g;
         if (word.match(reg) === null) {
@@ -31,6 +36,7 @@ class Identifier {
         }, j);
     }
     splitIntoArray(_str) {
+        // console.log('identifier');
         if (_str === undefined) {
             return false;
         }
@@ -61,6 +67,13 @@ class Identifier {
 }
 
 const obj = new Identifier();
-obj.splitIntoArray('I am a very 55 good 28/2/22) 9474851429 2/3 100th 2.55 1.22kgs. boy 12:11am.');
+// obj.splitIntoArray('I am a very 55 good 28/2/22) 9474851429 2/3 100th 2.55 1.22kgs. boy 12:11am.');
+
+window.startN2S = function () {
+    let str = document.getElementById('input1').value;
+    obj.initialize();
+    eventManager.initialize();
+    obj.splitIntoArray(str);
+}
 
 module.exports = Identifier;
