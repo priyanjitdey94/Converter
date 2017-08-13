@@ -1,3 +1,7 @@
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 const cDate = require('./date.js');
 const cTime = require('./time.js');
 const DecimalOrFraction = require('./decimalOrFraction.js');
@@ -9,16 +13,30 @@ const cTimeObj = new cTime();
 const decimalOrFractionObj = new DecimalOrFraction();
 const phoneObj = new Phone();
 
+/**
+ * Class that checks whether a number contains any special character
+ */
 class SpecialMiddle extends Cleaner {
+  /**
+   * @param {string} text - string to be tested.
+   */
   constructor () {
     super();
     this.text = '';
     this.format = /^\d{1,2}[\/|\.|\-]\d{1,2}[\/|\.|\-]\d{2,4}$|^\d+(\.)\d+$|^\d+(\/)\d+$|^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){0,1}$|^\d{10}$|^\+\d{1,2}\-\d{10}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
   }
 
+  /**
+   * Returns the text value.
+   */
   getText () {
     return this.text;
   }
+
+  /**
+   * Sets the text value.
+   * @param {string} _str - string set to text. 
+   */
   setText (_str) {
     if (_str === undefined) {
       return false;
@@ -27,6 +45,10 @@ class SpecialMiddle extends Cleaner {
     return true;
   }
 
+  /**
+   * Checks if string is valid
+   * @param {string} _str - string to be tested
+   */
   isValidSpecialMiddle (_str) {
     let a = this.setText(_str);
     let b = _str.match(this.format);
@@ -36,6 +58,11 @@ class SpecialMiddle extends Cleaner {
     return true;
   }
 
+  /**
+   * Chooses proper according to the given word
+   * @param {string} word - string to tested.
+   * @param {*} pos - position in original sting.
+   */
   chooseBranch (word, pos) {
     // console.log('specialMiddle');
     if (word === undefined) {

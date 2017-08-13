@@ -1,7 +1,22 @@
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+/**
+ * Class that removes punctuation from the beginning and end of the word
+ */
 class Cleaner {
+  /**
+   * @param {array} punctuation - array of all the punctuations that are to be ignored.
+   */
   constructor () {
     this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
   }
+
+  /**
+   * Tests if a character is a punctuation
+   * @param {char} c - character to be tested 
+   */
   belongsToPunctuation (c) {
     let i;
     for (i = 0; i < this.punctuation.length; i++) {
@@ -12,6 +27,10 @@ class Cleaner {
     return false;
   }
 
+  /**
+   * Removes all preceding and trailing punctuations
+   * @param {string} word - string which is to be cleaned
+   */
   clean (word) {
     let i, j;
     let wordBreakUp = [];

@@ -1,10 +1,22 @@
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 const eventManager = require('./eventManager.js');
 
+/**
+ * Class that replace the modified word with the old word
+ */
 class Replace {
   constructor () {
     // this.modified=[];
   }
 
+  /**
+   * Method that does the replacement
+   * @param {string} value - modified string.
+   * @param {number} pos - position in original string.
+   */
   doReplace (value, pos) {
     if (value === undefined || pos === undefined) {
       return;
@@ -15,6 +27,10 @@ class Replace {
   }
 }
 
+/**
+ * Finish Event
+ * @event Replace#finish
+ */
 eventManager.on('finish', (arr) => {
   eventManager.complete();
   let timer = setInterval(function () {
@@ -25,6 +41,10 @@ eventManager.on('finish', (arr) => {
   }, 20);
 });
 
+/**
+ * Complete processing done
+ * @event Replace#Done
+ */
 eventManager.on('done', (arr) => {
   eventManager.makeChangesAndPublish(arr);
 });

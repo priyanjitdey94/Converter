@@ -1,3 +1,7 @@
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 const css = require('./assets/css/style.css');
 const eventManager = require('./eventManager.js');
 const Decider = require('./decider.js');
@@ -5,17 +9,33 @@ const Replace = require('./replace.js');
 
 const deciderObj = new Decider();
 const replaceobj = new Replace();
+
+/** 
+ * class that breaks string into words
+ */
 class Identifier {
+  /**
+     * Create an Identifier Object.
+     * @param {string} text - The input string.
+     * @param {array} splitAr - Array used to store the elements after spliting text by space. 
+     */
   constructor () {
     this.text = '';
     this.splitAr = [];
-    this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']'];
   }
 
+  /**
+     * Reset text and splitAr
+     */
   initialize () {
     this.text = '';
     this.splitAr = [];
   }
+
+  /**
+     * Check if a string contains any digit
+     * @param {string} word - string given as input 
+     */
   containNumber (word) {
     let reg = /\d+/g;
     if (word.match(reg) === null) {
@@ -24,6 +44,11 @@ class Identifier {
     return true;
   }
 
+  /**
+     * Asynchronously forwards words containing digits
+     * @param {number} j - setTimeout interval 
+     * @param {Object} localThis - store the this reference 
+     */
   sendForProcessing (j, localThis) {
     setTimeout(function () {
       if (localThis.containNumber(localThis.splitAr[j])) {
@@ -35,6 +60,11 @@ class Identifier {
       }
     }, j);
   }
+
+  /**
+     * Splits the given string into words
+     * @param {string} _str - string given as input
+     */
   splitIntoArray (_str) {
     // console.log('identifier');
     if (_str === undefined) {
@@ -49,25 +79,9 @@ class Identifier {
       this.sendForProcessing(i, this);
     }
   }
-
-  makeChangesAndPublish (arr) {
-    let i, j, k;
-    j = 1;
-    let finalStr = '';
-    for (i = 0; i < this.splitAr.length; i++) {
-      if (j < arr.length && i === arr[j]) {
-        finalStr += arr[j - 1] + ' ';
-        j += 2;
-      } else {
-        finalStr += this.splitAr[i] + ' ';
-      }
-    }
-    // console.log(finalStr.trim());
-  }
 }
 
 const obj = new Identifier();
-// obj.splitIntoArray('I am a very 55 good 28/2/22) 9474851429 2/3 100th 2.55 1.22kgs. boy 12:11am.');
 
 window.startN2S = function () {
   let str = document.getElementById('input1').value;

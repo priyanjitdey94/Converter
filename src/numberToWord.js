@@ -1,8 +1,17 @@
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+/**
+ * Class that converts number to words
+ */
 class NumberToWord {
+  /**
+   * Constructor
+   * @param {number} _num - number to be converted
+   */
   constructor (_num) {
     this.num = 0;
-    // this.suffix='';
-    // this.prefix='';
     this.onePlace = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
     this.tenPlace = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
     this.oneInTenPlace = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
@@ -17,25 +26,25 @@ class NumberToWord {
     this.cMileStone = ['', 'thousandth', 'millionth', 'billionth', 'hundredth'];
   }
 
+  /**
+   * Sets _num to num
+   * @param {string} _num - number to be converted 
+   */
   setNumber (_num) {
     this.num = parseInt(_num);
   }
-  // setPrefix(_prefix){
-  //     this.prefix=_prefix;
-  // }
-  // setSuffix(_suffix){
-  //     this.suffix=_suffix;
-  // }
 
+  /**
+   * Returns this.num
+   */
   getNumber () {
     return this.num;
   }
-  // getPrefix(){
-  //     return this.prefix;
-  // }
-  // getSuffix(){
-  //     return this.suffix;
-  // }
+
+  /**
+   * Converts number to its equivalent ordinal
+   * @param {string} _str - string whose ordinal is to be found
+   */
   findEquivalentOrdinal (_str) {
     let i;
     for (i = 0; i < this.onePlace.length; i++) {
@@ -60,6 +69,12 @@ class NumberToWord {
     }
   }
 
+  /**
+   * Convert x, y and z to string
+   * @param {char} x - hundredth place
+   * @param {char} y - tenth place
+   * @param {char} z - one's place
+   */
   toHundredPlace (x, y, z) {
     let str = [],
       finalStr = '',
@@ -83,6 +98,10 @@ class NumberToWord {
     return finalStr.trim();
   }
 
+  /**
+   * Converts number to string 
+   * @param {string} _num - number to be converted
+   */
   convert (_num) {
     if (_num !== undefined) {
       this.setNumber(_num);
@@ -127,6 +146,3 @@ class NumberToWord {
 }
 
 module.exports = NumberToWord;
-// let obj=new NumberToWord();
-// obj.setNumber(212443);
-// console.log(obj.convert());

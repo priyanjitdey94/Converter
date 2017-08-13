@@ -1,3 +1,7 @@
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 const NumberToWord = require('./numberToWord.js');
 const Replace = require('./replace.js');
 const Cleaner = require('./cleaner.js');
@@ -5,7 +9,18 @@ const Cleaner = require('./cleaner.js');
 const numberToWordObj = new NumberToWord();
 const replaceObj = new Replace();
 
+/**
+ * Class to convert date to string
+ */
 class cDate extends Cleaner {
+  /**
+   * @param {string} text - input string
+   * @param {string} dd - day
+   * @param {string} mm - month
+   * @param {string} yy - year
+   * @param {regex} dateFormat - regex to check a valid date format
+   * @param {array} months - array containing months in words. 
+   */
   constructor () {
     super();
     this.text = '';
@@ -16,6 +31,10 @@ class cDate extends Cleaner {
     this.months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   }
 
+  /**
+   * Sets text to _str
+   * @param {string} _str - input word
+   */
   setDate (_str) {
     if (_str === undefined) {
       // console.log('Date cannot be undefined');
@@ -24,10 +43,18 @@ class cDate extends Cleaner {
     this.text = _str;
     return true;
   }
+
+  /**
+   * Returns the text
+   */
   getDate () {
     return this.text;
   }
 
+  /**
+   * Checks if c is . or / or -
+   * @param {char} c - character to be tested 
+   */
   belong (c) {
     if (c === '.' || c === '/' || c === '-') {
       return true;
@@ -35,6 +62,10 @@ class cDate extends Cleaner {
     return false;
   }
 
+  /**
+   * Checks if _str is valid
+   * @param {string} _str - string to be tested 
+   */
   isValidDate (_str) {
     let a = this.setDate(_str.trim());
     let b = _str.match(this.dateFormat);
@@ -45,6 +76,11 @@ class cDate extends Cleaner {
     return true;
   }
 
+  /**
+   * Converts date to string
+   * @param {string} _str - string to be converted
+   * @param {number} pos - position in string
+   */
   convertDate (_str, pos) {
     // console.log('Date');
     if (_str === undefined) {
@@ -122,6 +158,3 @@ class cDate extends Cleaner {
 }
 
 module.exports = cDate;
-// let obj = new cDate();
-// console.log(obj.isValidDate('12/12/12'));
-// obj.convertDate('12/12-22');

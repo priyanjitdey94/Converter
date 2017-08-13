@@ -1,7 +1,9 @@
 {
   "name": "Converter",
   "jest": {
-    "transform": {".css": "./node_modules/jest-css-modules"}
+    "transform": {
+      ".css": "./node_modules/jest-css-modules"
+    }
   },
   "version": "0.0.1",
   "description": "Library that converts number fetched from text to string.",
@@ -9,7 +11,8 @@
   "scripts": {
     "test": "jest --coverage",
     "build": "webpack",
-    "eslint": "./node_modules/.bin/eslint ./src/*.js --fix"
+    "eslint": "./node_modules/.bin/eslint ./src/*.js --fix",
+    "doc": "./node_modules/.bin/jsdoc ./src/*.js"
   },
   "repository": "https://github.com/priyanjitdey94/Converter.git",
   "author": "priyanjitdey94 <priyanjitcareer@gmail.com>",
@@ -32,6 +35,7 @@
     "jest": "^20.0.4",
     "jest-cli": "^20.0.4",
     "jest-css-modules": "^1.1.0",
+    "jsdoc": "^3.5.4",
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",

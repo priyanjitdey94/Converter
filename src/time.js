@@ -1,3 +1,7 @@
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 const NumberToWord = require('./numberToWord.js');
 const Replace = require('./replace.js');
 const Cleaner = require('./cleaner.js');
@@ -5,13 +9,23 @@ const Cleaner = require('./cleaner.js');
 const numberToWordObj = new NumberToWord();
 const replaceObj = new Replace();
 
+/**
+ * Class that converts time to string
+ */
 class cTime extends Cleaner {
+  /**
+   * @param {string} text - string to be changed.
+   */
   constructor () {
     super();
     this.text = '';
     this.timeFormat = /^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){0,1}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
   }
 
+  /**
+   * Sets text to string
+   * @param {string} _str 
+   */
   setTime (_str) {
     if (_str === undefined) {
       // console.log('Time cannot be undefined');
@@ -20,10 +34,18 @@ class cTime extends Cleaner {
     this.text = _str;
     return true;
   }
+
+  /**
+   * Returns the text value.
+   */
   getTime () {
     return this.text;
   }
 
+  /**
+   * Checks if a string is valis date
+   * @param {string} _str - string to be checked
+   */
   isValidTime (_str) {
     let a = this.setTime(_str);
     let b = _str.match(this.timeFormat);
@@ -34,6 +56,10 @@ class cTime extends Cleaner {
     return true;
   }
 
+  /**
+   * Fetches number from a string
+   * @param {string} str - string to be processed
+   */
   fetchNumber (str) {
     let j = str.length - 1;
     let div = [];
@@ -46,6 +72,10 @@ class cTime extends Cleaner {
     return div;
   }
 
+  /**
+   * Convert time to string format
+   * @param {string} word - time string to be converted.
+   */
   actualFormatConversion (word) {
     let k = word.split(':');
     let h = numberToWordObj.convert(k[0]);
@@ -89,6 +119,3 @@ class cTime extends Cleaner {
 }
 
 module.exports = cTime;
-// let obj = new cTime();
-// console.log(obj.isValidTime('20:43'));
-// obj.convertTime('20:43');
