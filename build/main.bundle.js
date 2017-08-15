@@ -2045,7 +2045,7 @@ var Cardinal = function (_Cleaner) {
       var temp = this.clean(_str);
       _str = temp[1];
       var cardinal = numberToWordObj.convert(_str);
-      replaceObj.doReplace(cardinal, pos);
+      replaceObj.doReplace(temp[0] + cardinal + temp[2], pos);
     }
   }]);
 
