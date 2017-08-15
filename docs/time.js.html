@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: time.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: time.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author Priyanjit Dey &lt;priyanjitcareer@gmail.com>
+ */
+
+const NumberToWord = require('./numberToWord.js');
+const Replace = require('./replace.js');
+const Cleaner = require('./cleaner.js');
+
+const numberToWordObj = new NumberToWord();
+const replaceObj = new Replace();
+
+/**
+ * Class that converts time to string
+ */
+class cTime extends Cleaner {
+  /**
+   * @param {string} text - string to be changed.
+   */
+  constructor () {
+    super();
+    this.text = '';
+    this.timeFormat = /^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){0,1}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
+  }
+
+  /**
+   * Sets text to string
+   * @param {string} _str 
+   */
+  setTime (_str) {
+    if (_str === undefined) {
+      // console.log('Time cannot be undefined');
+      return false;
+    }
+    this.text = _str;
+    return true;
+  }
+
+  /**
+   * Returns the text value.
+   */
+  getTime () {
+    return this.text;
+  }
+
+  /**
+   * Checks if a string is valis date
+   * @param {string} _str - string to be checked
+   */
+  isValidTime (_str) {
+    let a = this.setTime(_str);
+    let b = _str.match(this.timeFormat);
+
+    if (a === false || b === null) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Fetches number from a string
+   * @param {string} str - string to be processed
+   */
+  fetchNumber (str) {
+    let j = str.length - 1;
+    let div = [];
+    while (isNaN(parseInt(str.substr(j, 1)) &amp;&amp; j >= 0)) {
+      j--;
+    }
+    div.push(str.substr(0, j + 1));
+    div.push(str.substr(j + 1, str.length - j - 1));
+
+    return div;
+  }
+
+  /**
+   * Convert time to string format
+   * @param {string} word - time string to be converted.
+   */
+  actualFormatConversion (word) {
+    let k = word.split(':');
+    let h = numberToWordObj.convert(k[0]);
+    let m = -1;
+    if (k.length >= 2) {
+      m = numberToWordObj.convert(k[1]);
+    }
+    let s = -1;
+    if (k.length >= 3) {
+      s = numberToWordObj.convert(k[2]);
+    }
+
+    let finalTime = '';
+    finalTime += (h === 'one' ? h + ' hour ' : h + ' hours ');
+    if (m !== -1) {
+      finalTime += (m === 'one' ? m + ' minute' : m + ' minutes');
+    }
+    if (s !== -1) {
+      finalTime += (s === 'one' ? ' ' + s + ' second' : ' ' + s + ' seconds');
+    }
+    return finalTime;
+  }
+  convertTime (word, pos) {
+    // console.log('cTime');
+    if (word === undefined) {
+      return;
+    }
+    let temp = this.clean(word);
+    word = temp[1];
+
+    let i, j, k = [];
+    if (word[word.length - 1] === 'm' || word[word.length - 1] === 'M') {
+      k = this.fetchNumber(word);
+      j = this.actualFormatConversion(k[0]);
+      // console.log(k);
+      replaceObj.doReplace(temp[0] + j + temp[2], pos);
+    } else {
+      replaceObj.doReplace(temp[0] + this.actualFormatConversion(word) + temp[2], pos);
+    }
+  }
+}
+
+module.exports = cTime;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="global.html#Cardinal">Cardinal</a></li><li><a href="global.html#cDate">cDate</a></li><li><a href="Chunk.html">Chunk</a></li><li><a href="Chunk.Chunk.html">Chunk</a></li><li><a href="Cleaner.html">Cleaner</a></li><li><a href="cTime.html">cTime</a></li><li><a href="Decider.html">Decider</a></li><li><a href="Decimal.html">Decimal</a></li><li><a href="DecimalOrFraction.html">DecimalOrFraction</a></li><li><a href="EventManager.html">EventManager</a></li><li><a href="global.html#Fraction">Fraction</a></li><li><a href="global.html#Identifier">Identifier</a></li><li><a href="global.html#NumberToWord">NumberToWord</a></li><li><a href="global.html#OrdinalToCardinal">OrdinalToCardinal</a></li><li><a href="Phone.html">Phone</a></li><li><a href="global.html#Replace">Replace</a></li><li><a href="SpecialMiddle.html">SpecialMiddle</a></li><li><a href="SuffixPrefix.html">SuffixPrefix</a></li><li><a href="Weight.html">Weight</a></li></ul><h3>Events</h3><ul><li><a href="global.html#Replace#event:Done">Done</a></li><li><a href="global.html#Replace#event:finish">finish</a></li></ul><h3>Global</h3><ul><li><a href="global.html#css">css</a></li><li><a href="global.html#EventEmitter">EventEmitter</a></li><li><a href="global.html#eventManager">eventManager</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Tue Aug 15 2017 20:37:33 GMT+0530 (IST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

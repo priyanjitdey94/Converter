@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: decimalOrFraction.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: decimalOrFraction.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author Priyanjit Dey &lt;priyanjitcareer@gmail.com>
+ */
+
+const Fraction = require('./fraction.js');
+const Decimal = require('./decimal.js');
+const Cleaner = require('./cleaner.js');
+
+const fractionObj = new Fraction();
+const decimalObj = new Decimal();
+
+/**
+ * Class to check whether a string is decimal/fraction.
+ */
+class DecimalOrFraction extends Cleaner {
+  /**
+   * @param {string} text - input string.
+   * @param {regex} format - regex to check whether given string is decimal/fraction.
+   * @param {regex} decimalFormat - regex to check if a string is decimal.
+   * @param {regex} fractionFormat - regex to check if a string is fraction. 
+   */
+  constructor () {
+    super();
+    this.text = '';
+    this.format = /^\d+(\.)\d+$|^\d+(\/)\d+$/g;
+    this.decimalFormat = /^\d+(\.)\d+$/g;
+    this.fractionFormat = /^\d+(\/)\d+$/g;
+  }
+
+  /**
+   * Returns the text value
+   */
+  getText () {
+    return this.text;
+  }
+
+  /**
+   * Sets the text value
+   * @param {string} _str - input string 
+   */
+  setText (_str) {
+    if (_str === undefined) {
+      // console.log('Text cannot be undefined.');
+      return false;
+    }
+    this.text = _str;
+    return true;
+  }
+
+  /**
+   * Checks if a string is a decimal/fraction
+   * @param {string} _str - string to be tested
+   */
+  isValidDecimalOrFraction (_str) {
+    this.setText(_str);
+    let a = this.setText(_str);
+    let b = this.text.match(this.format);
+    if (b === null || a === false) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Checks if a string is decimal.
+   * @param {string} _str - string to be tested.
+   */
+  isDecimal (_str) {
+    this.setText(_str);
+    let b = this.text.match(this.decimalFormat);
+    if (b !== null &amp;&amp; b.length === 1) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Checks if a string is a fraction
+   * @param {string} _str - string to be tested 
+   */
+  isFraction (_str) {
+    this.setText(_str);
+    let b = this.text.match(this.fractionFormat);
+    if (b !== null &amp;&amp; b.length === 1) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Converts string to decimal
+   * @param {string} word - string to be converted
+   * @param {number} pos - position in string
+   */
+  convertToDecimal (word, pos) {
+    // console.log('DecimalOrFraction');
+    let convertedText = decimalObj.convertDecimal(word, pos);
+  }
+
+  /**
+   * Converts string to fraction
+   * @param {string} word - string to be converted
+   * @param {number} pos - position in string
+   */
+  convertToFraction (word, pos) {
+    // console.log('DecimalOrFraction');
+    let convertedText = fractionObj.convertFraction(word, pos);
+  }
+}
+
+module.exports = DecimalOrFraction;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="global.html#Cardinal">Cardinal</a></li><li><a href="global.html#cDate">cDate</a></li><li><a href="Chunk.html">Chunk</a></li><li><a href="Chunk.Chunk.html">Chunk</a></li><li><a href="Cleaner.html">Cleaner</a></li><li><a href="cTime.html">cTime</a></li><li><a href="Decider.html">Decider</a></li><li><a href="Decimal.html">Decimal</a></li><li><a href="DecimalOrFraction.html">DecimalOrFraction</a></li><li><a href="EventManager.html">EventManager</a></li><li><a href="global.html#Fraction">Fraction</a></li><li><a href="global.html#Identifier">Identifier</a></li><li><a href="global.html#NumberToWord">NumberToWord</a></li><li><a href="global.html#OrdinalToCardinal">OrdinalToCardinal</a></li><li><a href="Phone.html">Phone</a></li><li><a href="global.html#Replace">Replace</a></li><li><a href="SpecialMiddle.html">SpecialMiddle</a></li><li><a href="SuffixPrefix.html">SuffixPrefix</a></li><li><a href="Weight.html">Weight</a></li></ul><h3>Events</h3><ul><li><a href="global.html#Replace#event:Done">Done</a></li><li><a href="global.html#Replace#event:finish">finish</a></li></ul><h3>Global</h3><ul><li><a href="global.html#css">css</a></li><li><a href="global.html#EventEmitter">EventEmitter</a></li><li><a href="global.html#eventManager">eventManager</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Tue Aug 15 2017 20:37:33 GMT+0530 (IST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -37,6 +37,9 @@ class Identifier {
      * @param {string} word - string given as input 
      */
   containNumber (word) {
+    if (word === undefined) {
+      return false;
+    }
     let reg = /\d+/g;
     if (word.match(reg) === null) {
       return false;
@@ -66,7 +69,9 @@ class Identifier {
      * @param {string} _str - string given as input
      */
   splitIntoArray (_str) {
-    // console.log('identifier');
+    this.initialize();
+    eventManager.initialize();
+    // console.log(_str);
     if (_str === undefined) {
       return false;
     }
@@ -80,14 +85,5 @@ class Identifier {
     }
   }
 }
-
-const obj = new Identifier();
-
-window.startN2S = function () {
-  let str = document.getElementById('input1').value;
-  obj.initialize();
-  eventManager.initialize();
-  obj.splitIntoArray(str);
-};
 
 module.exports = Identifier;

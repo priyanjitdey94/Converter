@@ -74,12 +74,28 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+/**
+ * Class that removes punctuation from the beginning and end of the word
+ */
 var Cleaner = function () {
+  /**
+   * @param {array} punctuation - array of all the punctuations that are to be ignored.
+   */
   function Cleaner() {
     _classCallCheck(this, Cleaner);
 
     this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']', '%'];
   }
+
+  /**
+   * Tests if a character is a punctuation
+   * @param {char} c - character to be tested 
+   */
+
 
   _createClass(Cleaner, [{
     key: 'belongsToPunctuation',
@@ -92,6 +108,12 @@ var Cleaner = function () {
       }
       return false;
     }
+
+    /**
+     * Removes all preceding and trailing punctuations
+     * @param {string} word - string which is to be cleaned
+     */
+
   }, {
     key: 'clean',
     value: function clean(word) {
@@ -131,14 +153,29 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 var eventManager = __webpack_require__(3);
+
+/**
+ * Class that replace the modified word with the old word
+ */
 
 var Replace = function () {
   function Replace() {
-    // this.modified=[];
-
     _classCallCheck(this, Replace);
   }
+  // this.modified=[];
+
+
+  /**
+   * Method that does the replacement
+   * @param {string} value - modified string.
+   * @param {number} pos - position in original string.
+   */
+
 
   _createClass(Replace, [{
     key: 'doReplace',
@@ -155,6 +192,12 @@ var Replace = function () {
   return Replace;
 }();
 
+/**
+ * Finish Event
+ * @event Replace#finish
+ */
+
+
 eventManager.on('finish', function (arr) {
   eventManager.complete();
   var timer = setInterval(function () {
@@ -165,8 +208,15 @@ eventManager.on('finish', function (arr) {
   }, 20);
 });
 
+/**
+ * Complete processing done
+ * @event Replace#Done
+ */
 eventManager.on('done', function (arr) {
   eventManager.makeChangesAndPublish(arr);
+  setTimeout(function () {
+    eventManager.emit('sendNext');
+  }, 5);
 });
 
 module.exports = Replace;
@@ -182,13 +232,22 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+/**
+ * Class that converts number to words
+ */
 var NumberToWord = function () {
+  /**
+   * Constructor
+   * @param {number} _num - number to be converted
+   */
   function NumberToWord(_num) {
     _classCallCheck(this, NumberToWord);
 
     this.num = 0;
-    // this.suffix='';
-    // this.prefix='';
     this.onePlace = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
     this.tenPlace = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
     this.oneInTenPlace = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
@@ -199,29 +258,32 @@ var NumberToWord = function () {
     this.cMileStone = ['', 'thousandth', 'millionth', 'billionth', 'hundredth'];
   }
 
+  /**
+   * Sets _num to num
+   * @param {string} _num - number to be converted 
+   */
+
+
   _createClass(NumberToWord, [{
     key: 'setNumber',
     value: function setNumber(_num) {
       this.num = parseInt(_num);
     }
-    // setPrefix(_prefix){
-    //     this.prefix=_prefix;
-    // }
-    // setSuffix(_suffix){
-    //     this.suffix=_suffix;
-    // }
+
+    /**
+     * Returns this.num
+     */
 
   }, {
     key: 'getNumber',
     value: function getNumber() {
       return this.num;
     }
-    // getPrefix(){
-    //     return this.prefix;
-    // }
-    // getSuffix(){
-    //     return this.suffix;
-    // }
+
+    /**
+     * Converts number to its equivalent ordinal
+     * @param {string} _str - string whose ordinal is to be found
+     */
 
   }, {
     key: 'findEquivalentOrdinal',
@@ -248,6 +310,14 @@ var NumberToWord = function () {
         }
       }
     }
+
+    /**
+     * Convert x, y and z to string
+     * @param {char} x - hundredth place
+     * @param {char} y - tenth place
+     * @param {char} z - one's place
+     */
+
   }, {
     key: 'toHundredPlace',
     value: function toHundredPlace(x, y, z) {
@@ -272,6 +342,12 @@ var NumberToWord = function () {
       }
       return finalStr.trim();
     }
+
+    /**
+     * Converts number to string 
+     * @param {string} _num - number to be converted
+     */
+
   }, {
     key: 'convert',
     value: function convert(_num) {
@@ -321,9 +397,6 @@ var NumberToWord = function () {
 }();
 
 module.exports = NumberToWord;
-// let obj=new NumberToWord();
-// obj.setNumber(212443);
-// console.log(obj.convert());
 
 /***/ }),
 /* 3 */
@@ -340,11 +413,25 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var EventEmitter = __webpack_require__(11);
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+var EventEmitter = __webpack_require__(12);
+
+/**
+ * Class that handles all the events.
+ */
 
 var EventManager = function (_EventEmitter) {
   _inherits(EventManager, _EventEmitter);
 
+  /**
+   * @param {number} taskToBeProcessed - total number of tasks submitted.
+   * @param {number} taskProcessed - total number of tasks done.
+   * @param {boolean} processingDone - checks if processing is done.
+   * @param {array} modified - stors all the words that are modified.
+   */
   function EventManager() {
     _classCallCheck(this, EventManager);
 
@@ -358,6 +445,11 @@ var EventManager = function (_EventEmitter) {
     return _this;
   }
 
+  /**
+   * Initialize everything
+   */
+
+
   _createClass(EventManager, [{
     key: 'initialize',
     value: function initialize() {
@@ -366,21 +458,41 @@ var EventManager = function (_EventEmitter) {
       this.processingDone = false;
       this.modified = [];
     }
+
+    /**
+     * Adds a new task to be done
+     */
+
   }, {
     key: 'addTask',
     value: function addTask() {
       this.taskTobeProcessed++;
     }
+
+    /**
+     * Remembers how many tasks are done
+     */
+
   }, {
     key: 'removeTask',
     value: function removeTask() {
       this.taskProcessed++;
     }
+
+    /**
+     * Check if processing of all task is complete
+     */
+
   }, {
     key: 'complete',
     value: function complete() {
       this.processingDone = true;
     }
+
+    /**
+     * check if the complete input string is processed and all the task are done
+     */
+
   }, {
     key: 'check',
     value: function check() {
@@ -389,6 +501,12 @@ var EventManager = function (_EventEmitter) {
       }
       return false;
     }
+
+    /**
+     * Writes the changes
+     * @param {array} arr - input string 
+     */
+
   }, {
     key: 'makeChangesAndPublish',
     value: function makeChangesAndPublish(arr) {
@@ -406,7 +524,7 @@ var EventManager = function (_EventEmitter) {
         }
       }
       // console.log(finalStr.trim());
-      document.getElementById('input2').value = finalStr.trim();
+      document.getElementById('input2').value += finalStr.trim();
     }
   }]);
 
@@ -430,6 +548,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 var NumberToWord = __webpack_require__(2);
 var Replace = __webpack_require__(1);
 var Cleaner = __webpack_require__(0);
@@ -437,9 +559,16 @@ var Cleaner = __webpack_require__(0);
 var numberToWordObj = new NumberToWord();
 var replaceObj = new Replace();
 
+/**
+ * Class that converts time to string
+ */
+
 var cTime = function (_Cleaner) {
   _inherits(cTime, _Cleaner);
 
+  /**
+   * @param {string} text - string to be changed.
+   */
   function cTime() {
     _classCallCheck(this, cTime);
 
@@ -449,6 +578,12 @@ var cTime = function (_Cleaner) {
     _this.timeFormat = /^\d{1,2}[\:]\d{1,2}([\:]\d{1,2}){0,1}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){0,1}$|^\d{1,2}(am|pm|a\.m|p\.m|AM|PM|A\.M|P\.M){1}$/g;
     return _this;
   }
+
+  /**
+   * Sets text to string
+   * @param {string} _str 
+   */
+
 
   _createClass(cTime, [{
     key: 'setTime',
@@ -460,11 +595,22 @@ var cTime = function (_Cleaner) {
       this.text = _str;
       return true;
     }
+
+    /**
+     * Returns the text value.
+     */
+
   }, {
     key: 'getTime',
     value: function getTime() {
       return this.text;
     }
+
+    /**
+     * Checks if a string is valis date
+     * @param {string} _str - string to be checked
+     */
+
   }, {
     key: 'isValidTime',
     value: function isValidTime(_str) {
@@ -476,6 +622,12 @@ var cTime = function (_Cleaner) {
       }
       return true;
     }
+
+    /**
+     * Fetches number from a string
+     * @param {string} str - string to be processed
+     */
+
   }, {
     key: 'fetchNumber',
     value: function fetchNumber(str) {
@@ -489,6 +641,12 @@ var cTime = function (_Cleaner) {
 
       return div;
     }
+
+    /**
+     * Convert time to string format
+     * @param {string} word - time string to be converted.
+     */
+
   }, {
     key: 'actualFormatConversion',
     value: function actualFormatConversion(word) {
@@ -541,9 +699,6 @@ var cTime = function (_Cleaner) {
 }(Cleaner);
 
 module.exports = cTime;
-// let obj = new cTime();
-// console.log(obj.isValidTime('20:43'));
-// obj.convertTime('20:43');
 
 /***/ }),
 /* 5 */
@@ -556,22 +711,182 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var css = __webpack_require__(6);
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+var Identifier = __webpack_require__(6);
 var eventManager = __webpack_require__(3);
-var Decider = __webpack_require__(12);
+
+var identifierObj = new Identifier();
+/**
+ * Class that takes text from html textbox and sends it to identifier in chunks for processing
+ * @class Chunk
+ */
+
+var Chunk = function () {
+  /**
+     * Creates an instance of Chunk.
+     * @param {string} str - String to be processed.
+     * @memberof Chunk
+     */
+  function Chunk(str) {
+    _classCallCheck(this, Chunk);
+
+    this.sentence = '';
+    this.itrX = 0;
+    this.itrY = 0;
+    this.chunkNum = 0;
+    if (str !== undefined) {
+      this.sentence = str;
+    }
+  }
+
+  /**
+     * Initializes the class properties to its default value
+     * @memberof Chunk
+     */
+
+
+  _createClass(Chunk, [{
+    key: 'initialize',
+    value: function initialize() {
+      this.sentence = '';
+      this.itrX = 0;
+      this.itrY = 0;
+      this.chunkNum = 0;
+    }
+
+    /**
+       * Sets the sentence to str
+       * @param {string} str 
+       * @memberof Chunk
+       */
+
+  }, {
+    key: 'setSentence',
+    value: function setSentence(str) {
+      this.sentence = str;
+    }
+
+    /**
+       * Finds index of next non-whitespace character.
+       * @returns index of next non-whistespace character.
+       * @memberof Chunk
+       */
+
+  }, {
+    key: 'getNextIndexY',
+    value: function getNextIndexY() {
+      var y = this.itrY;
+      y = Math.min(this.itrX + 100, this.sentence.length);
+      if (y >= this.sentence.length) {
+        return y;
+      }
+      if (this.sentence[y] !== ' ') {
+        while (this.sentence[y] !== ' ') {
+          y++;
+          if (y === this.sentence.length) {
+            return y;
+          }
+        }
+      }
+      return y;
+    }
+
+    /**
+       * Sends chunk of string to identifier for processing
+       * @memberof Chunk
+       */
+
+  }, {
+    key: 'createChunkAndProcess',
+    value: function createChunkAndProcess() {
+      if (this.itrX >= this.sentence.length) {
+        document.getElementById('convertB').disabled = false;
+        return;
+      }
+      this.chunkNum++;
+      this.itrY = this.getNextIndexY();
+
+      identifierObj.splitIntoArray(this.sentence.substr(this.itrX, this.itrY - this.itrX));
+
+      this.itrX = this.itrY + 1;
+      if (this.sentence[this.itrX] === ' ') {
+        while (this.sentence[this.itrX] === ' ') {
+          this.itrX++;
+          if (this.itrX === this.sentence.length - 1) {
+            break;
+          }
+        }
+      }
+    }
+  }]);
+
+  return Chunk;
+}();
+
+var chunkObj = new Chunk();
+
+eventManager.on('sendNext', function () {
+  chunkObj.createChunkAndProcess();
+});
+
+window.startN2S = function () {
+  var str = document.getElementById('input1').value;
+  document.getElementById('input2').value = '';
+  chunkObj.initialize();
+  chunkObj.setSentence(str);
+  document.getElementById('convertB').disabled = true;
+  eventManager.emit('sendNext');
+};
+
+module.exports = Chunk;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+var css = __webpack_require__(7);
+var eventManager = __webpack_require__(3);
+var Decider = __webpack_require__(13);
 var Replace = __webpack_require__(1);
 
 var deciderObj = new Decider();
 var replaceobj = new Replace();
 
+/** 
+ * class that breaks string into words
+ */
+
 var Identifier = function () {
+  /**
+     * Create an Identifier Object.
+     * @param {string} text - The input string.
+     * @param {array} splitAr - Array used to store the elements after spliting text by space. 
+     */
   function Identifier() {
     _classCallCheck(this, Identifier);
 
     this.text = '';
     this.splitAr = [];
-    this.punctuation = ['.', ',', '?', '!', '(', ')', '{', '}', '[', ']'];
   }
+
+  /**
+     * Reset text and splitAr
+     */
+
 
   _createClass(Identifier, [{
     key: 'initialize',
@@ -579,15 +894,31 @@ var Identifier = function () {
       this.text = '';
       this.splitAr = [];
     }
+
+    /**
+       * Check if a string contains any digit
+       * @param {string} word - string given as input 
+       */
+
   }, {
     key: 'containNumber',
     value: function containNumber(word) {
+      if (word === undefined) {
+        return false;
+      }
       var reg = /\d+/g;
       if (word.match(reg) === null) {
         return false;
       }
       return true;
     }
+
+    /**
+       * Asynchronously forwards words containing digits
+       * @param {number} j - setTimeout interval 
+       * @param {Object} localThis - store the this reference 
+       */
+
   }, {
     key: 'sendForProcessing',
     value: function sendForProcessing(j, localThis) {
@@ -601,10 +932,18 @@ var Identifier = function () {
         }
       }, j);
     }
+
+    /**
+       * Splits the given string into words
+       * @param {string} _str - string given as input
+       */
+
   }, {
     key: 'splitIntoArray',
     value: function splitIntoArray(_str) {
-      // console.log('identifier');
+      this.initialize();
+      eventManager.initialize();
+      // console.log(_str);
       if (_str === undefined) {
         return false;
       }
@@ -619,49 +958,21 @@ var Identifier = function () {
         this.sendForProcessing(i, this);
       }
     }
-  }, {
-    key: 'makeChangesAndPublish',
-    value: function makeChangesAndPublish(arr) {
-      var i = void 0,
-          j = void 0,
-          k = void 0;
-      j = 1;
-      var finalStr = '';
-      for (i = 0; i < this.splitAr.length; i++) {
-        if (j < arr.length && i === arr[j]) {
-          finalStr += arr[j - 1] + ' ';
-          j += 2;
-        } else {
-          finalStr += this.splitAr[i] + ' ';
-        }
-      }
-      // console.log(finalStr.trim());
-    }
   }]);
 
   return Identifier;
 }();
 
-var obj = new Identifier();
-// obj.splitIntoArray('I am a very 55 good 28/2/22) 9474851429 2/3 100th 2.55 1.22kgs. boy 12:11am.');
-
-window.startN2S = function () {
-  var str = document.getElementById('input1').value;
-  obj.initialize();
-  eventManager.initialize();
-  obj.splitIntoArray(str);
-};
-
 module.exports = Identifier;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(7);
+var content = __webpack_require__(8);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -669,7 +980,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(9)(content, options);
+var update = __webpack_require__(10)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -686,10 +997,10 @@ if(false) {
 }
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(8)(undefined);
+exports = module.exports = __webpack_require__(9)(undefined);
 // imports
 
 
@@ -700,7 +1011,7 @@ exports.push([module.i, "html,body {\n\theight: 100%;\n\tmargin: 0;\n\tbackgroun
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 /*
@@ -782,7 +1093,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -828,7 +1139,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(10);
+var	fixUrls = __webpack_require__(11);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1141,7 +1452,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 
@@ -1236,7 +1547,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -1544,7 +1855,7 @@ function isUndefined(arg) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1558,9 +1869,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Cardinal = __webpack_require__(13);
-var SpecialMiddle = __webpack_require__(14);
-var SuffixPrefix = __webpack_require__(20);
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+var Cardinal = __webpack_require__(14);
+var SpecialMiddle = __webpack_require__(15);
+var SuffixPrefix = __webpack_require__(21);
 var Replace = __webpack_require__(1);
 var Cleaner = __webpack_require__(0);
 
@@ -1569,9 +1884,16 @@ var specialMiddleObj = new SpecialMiddle();
 var suffixPrefixObj = new SuffixPrefix();
 var replaceObj = new Replace();
 
+/**
+ * Class which decided which branch to choose based on given input
+ */
+
 var Decider = function (_Cleaner) {
   _inherits(Decider, _Cleaner);
 
+  /**
+   * @param {string} text - Input text
+   */
   function Decider() {
     _classCallCheck(this, Decider);
 
@@ -1580,6 +1902,13 @@ var Decider = function (_Cleaner) {
     _this.text = '';
     return _this;
   }
+
+  /**
+   * Decides which branch to choose
+   * @param {string} word - word to be converted
+   * @param {number} pos -  position in string
+   */
+
 
   _createClass(Decider, [{
     key: 'decide',
@@ -1591,9 +1920,7 @@ var Decider = function (_Cleaner) {
       this.text = word;
 
       var temp = this.clean(this.text);
-      // let arr=this.fetchNumber(temp[0]);
 
-      // console.log(temp[1]);
       if (specialMiddleObj.isValidSpecialMiddle(temp[1])) {
         specialMiddleObj.chooseBranch(word, pos);
       } else if (cardinalObj.isValidCardinal(temp[1])) {
@@ -1612,89 +1939,6 @@ var Decider = function (_Cleaner) {
 module.exports = Decider;
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var NumberToWord = __webpack_require__(2);
-var Replace = __webpack_require__(1);
-var Cleaner = __webpack_require__(0);
-
-var numberToWordObj = new NumberToWord();
-var replaceObj = new Replace();
-
-var Cardinal = function (_Cleaner) {
-  _inherits(Cardinal, _Cleaner);
-
-  function Cardinal() {
-    _classCallCheck(this, Cardinal);
-
-    var _this = _possibleConstructorReturn(this, (Cardinal.__proto__ || Object.getPrototypeOf(Cardinal)).call(this));
-
-    _this.text = '';
-    return _this;
-  }
-
-  _createClass(Cardinal, [{
-    key: 'setCardinal',
-    value: function setCardinal(_str) {
-      if (_str === undefined) {
-        return false;
-      }
-      this.text = _str;
-      return true;
-    }
-  }, {
-    key: 'getCardinal',
-    value: function getCardinal() {
-      return this.text;
-    }
-  }, {
-    key: 'isValidCardinal',
-    value: function isValidCardinal(_str) {
-      var a = this.setCardinal(_str);
-
-      var i = void 0;
-      for (i = 0; i < _str.length; i++) {
-        if (isNaN(parseInt(_str.substr(i, 1)))) {
-          return false;
-        }
-      }
-      return true && a;
-    }
-  }, {
-    key: 'convertCardinal',
-    value: function convertCardinal(_str, pos) {
-      // console.log('cardinal');
-      if (_str === undefined) {
-        return;
-      }
-      var temp = this.clean(_str);
-      _str = temp[1];
-      var cardinal = numberToWordObj.convert(_str);
-      replaceObj.doReplace(cardinal, pos);
-    }
-  }]);
-
-  return Cardinal;
-}(Cleaner);
-
-module.exports = Cardinal;
-// let obj = new Cardinal();
-// console.log(obj.isValidCardinal('232'));
-// obj.convertCardinal('2424');
-
-/***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1709,10 +1953,130 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var cDate = __webpack_require__(15);
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+var NumberToWord = __webpack_require__(2);
+var Replace = __webpack_require__(1);
+var Cleaner = __webpack_require__(0);
+
+var numberToWordObj = new NumberToWord();
+var replaceObj = new Replace();
+
+/**
+ * Class that checks whether a word is contains only digit and is ordinal.
+ */
+
+var Cardinal = function (_Cleaner) {
+  _inherits(Cardinal, _Cleaner);
+
+  /**
+   * Create Cardinal Object.
+   * @param {string} text - word to be processed.
+   */
+  function Cardinal() {
+    _classCallCheck(this, Cardinal);
+
+    var _this = _possibleConstructorReturn(this, (Cardinal.__proto__ || Object.getPrototypeOf(Cardinal)).call(this));
+
+    _this.text = '';
+    return _this;
+  }
+
+  /**
+   * Sets the text property to _str.
+   * @param {string} _str - word given as input.
+   */
+
+
+  _createClass(Cardinal, [{
+    key: 'setCardinal',
+    value: function setCardinal(_str) {
+      if (_str === undefined) {
+        return false;
+      }
+      this.text = _str;
+      return true;
+    }
+
+    /**
+     * Returns the text value.
+     */
+
+  }, {
+    key: 'getCardinal',
+    value: function getCardinal() {
+      return this.text;
+    }
+
+    /**
+     * Checks if _str is a valid cardinal.
+     * @param {string} _str - word given as input.
+     */
+
+  }, {
+    key: 'isValidCardinal',
+    value: function isValidCardinal(_str) {
+      var a = this.setCardinal(_str);
+
+      var i = void 0;
+      for (i = 0; i < _str.length; i++) {
+        if (isNaN(parseInt(_str.substr(i, 1)))) {
+          return false;
+        }
+      }
+      return true && a;
+    }
+
+    /**
+     * Converts the given word to equivalent cardinal, if word is valid.
+     * @param {string} _str - word to be processed.
+     * @param {number} pos - position of the word in the text. 
+     */
+
+  }, {
+    key: 'convertCardinal',
+    value: function convertCardinal(_str, pos) {
+      // console.log('cardinal');
+      if (_str === undefined) {
+        return;
+      }
+      var temp = this.clean(_str);
+      _str = temp[1];
+      var cardinal = numberToWordObj.convert(_str);
+      replaceObj.doReplace(temp[0] + cardinal + temp[2], pos);
+    }
+  }]);
+
+  return Cardinal;
+}(Cleaner);
+
+module.exports = Cardinal;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+var cDate = __webpack_require__(16);
 var cTime = __webpack_require__(4);
-var DecimalOrFraction = __webpack_require__(16);
-var Phone = __webpack_require__(19);
+var DecimalOrFraction = __webpack_require__(17);
+var Phone = __webpack_require__(20);
 var Cleaner = __webpack_require__(0);
 
 var cDateObj = new cDate();
@@ -1720,9 +2084,16 @@ var cTimeObj = new cTime();
 var decimalOrFractionObj = new DecimalOrFraction();
 var phoneObj = new Phone();
 
+/**
+ * Class that checks whether a number contains any special character
+ */
+
 var SpecialMiddle = function (_Cleaner) {
   _inherits(SpecialMiddle, _Cleaner);
 
+  /**
+   * @param {string} text - string to be tested.
+   */
   function SpecialMiddle() {
     _classCallCheck(this, SpecialMiddle);
 
@@ -1733,11 +2104,22 @@ var SpecialMiddle = function (_Cleaner) {
     return _this;
   }
 
+  /**
+   * Returns the text value.
+   */
+
+
   _createClass(SpecialMiddle, [{
     key: 'getText',
     value: function getText() {
       return this.text;
     }
+
+    /**
+     * Sets the text value.
+     * @param {string} _str - string set to text. 
+     */
+
   }, {
     key: 'setText',
     value: function setText(_str) {
@@ -1747,6 +2129,12 @@ var SpecialMiddle = function (_Cleaner) {
       this.text = _str;
       return true;
     }
+
+    /**
+     * Checks if string is valid
+     * @param {string} _str - string to be tested
+     */
+
   }, {
     key: 'isValidSpecialMiddle',
     value: function isValidSpecialMiddle(_str) {
@@ -1757,6 +2145,13 @@ var SpecialMiddle = function (_Cleaner) {
       }
       return true;
     }
+
+    /**
+     * Chooses proper according to the given word
+     * @param {string} word - string to tested.
+     * @param {*} pos - position in original sting.
+     */
+
   }, {
     key: 'chooseBranch',
     value: function chooseBranch(word, pos) {
@@ -1790,7 +2185,7 @@ var SpecialMiddle = function (_Cleaner) {
 module.exports = SpecialMiddle;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1804,6 +2199,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 var NumberToWord = __webpack_require__(2);
 var Replace = __webpack_require__(1);
 var Cleaner = __webpack_require__(0);
@@ -1811,9 +2210,21 @@ var Cleaner = __webpack_require__(0);
 var numberToWordObj = new NumberToWord();
 var replaceObj = new Replace();
 
+/**
+ * Class to convert date to string
+ */
+
 var cDate = function (_Cleaner) {
   _inherits(cDate, _Cleaner);
 
+  /**
+   * @param {string} text - input string
+   * @param {string} dd - day
+   * @param {string} mm - month
+   * @param {string} yy - year
+   * @param {regex} dateFormat - regex to check a valid date format
+   * @param {array} months - array containing months in words. 
+   */
   function cDate() {
     _classCallCheck(this, cDate);
 
@@ -1828,6 +2239,12 @@ var cDate = function (_Cleaner) {
     return _this;
   }
 
+  /**
+   * Sets text to _str
+   * @param {string} _str - input word
+   */
+
+
   _createClass(cDate, [{
     key: 'setDate',
     value: function setDate(_str) {
@@ -1838,11 +2255,22 @@ var cDate = function (_Cleaner) {
       this.text = _str;
       return true;
     }
+
+    /**
+     * Returns the text
+     */
+
   }, {
     key: 'getDate',
     value: function getDate() {
       return this.text;
     }
+
+    /**
+     * Checks if c is . or / or -
+     * @param {char} c - character to be tested 
+     */
+
   }, {
     key: 'belong',
     value: function belong(c) {
@@ -1851,6 +2279,12 @@ var cDate = function (_Cleaner) {
       }
       return false;
     }
+
+    /**
+     * Checks if _str is valid
+     * @param {string} _str - string to be tested 
+     */
+
   }, {
     key: 'isValidDate',
     value: function isValidDate(_str) {
@@ -1862,6 +2296,13 @@ var cDate = function (_Cleaner) {
       }
       return true;
     }
+
+    /**
+     * Converts date to string
+     * @param {string} _str - string to be converted
+     * @param {number} pos - position in string
+     */
+
   }, {
     key: 'convertDate',
     value: function convertDate(_str, pos) {
@@ -1944,111 +2385,6 @@ var cDate = function (_Cleaner) {
 }(Cleaner);
 
 module.exports = cDate;
-// let obj = new cDate();
-// console.log(obj.isValidDate('12/12/12'));
-// obj.convertDate('12/12-22');
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Fraction = __webpack_require__(17);
-var Decimal = __webpack_require__(18);
-var Cleaner = __webpack_require__(0);
-
-var fractionObj = new Fraction();
-var decimalObj = new Decimal();
-
-var DecimalOrFraction = function (_Cleaner) {
-  _inherits(DecimalOrFraction, _Cleaner);
-
-  function DecimalOrFraction() {
-    _classCallCheck(this, DecimalOrFraction);
-
-    var _this = _possibleConstructorReturn(this, (DecimalOrFraction.__proto__ || Object.getPrototypeOf(DecimalOrFraction)).call(this));
-
-    _this.text = '';
-    _this.format = /^\d+(\.)\d+$|^\d+(\/)\d+$/g;
-    _this.decimalFormat = /^\d+(\.)\d+$/g;
-    _this.fractionFormat = /^\d+(\/)\d+$/g;
-    return _this;
-  }
-
-  _createClass(DecimalOrFraction, [{
-    key: 'getText',
-    value: function getText() {
-      return this.text;
-    }
-  }, {
-    key: 'setText',
-    value: function setText(_str) {
-      if (_str === undefined) {
-        // console.log('Text cannot be undefined.');
-        return false;
-      }
-      this.text = _str;
-      return true;
-    }
-  }, {
-    key: 'isValidDecimalOrFraction',
-    value: function isValidDecimalOrFraction(_str) {
-      this.setText(_str);
-      var a = this.setText(_str);
-      var b = this.text.match(this.format);
-      if (b === null || a === false) {
-        return false;
-      }
-      return true;
-    }
-  }, {
-    key: 'isDecimal',
-    value: function isDecimal(_str) {
-      this.setText(_str);
-      var b = this.text.match(this.decimalFormat);
-      if (b !== null && b.length === 1) {
-        return true;
-      }
-      return false;
-    }
-  }, {
-    key: 'isFraction',
-    value: function isFraction(_str) {
-      this.setText(_str);
-      var b = this.text.match(this.fractionFormat);
-      if (b !== null && b.length === 1) {
-        return true;
-      }
-      return false;
-    }
-  }, {
-    key: 'convertToDecimal',
-    value: function convertToDecimal(word, pos) {
-      // console.log('DecimalOrFraction');
-      var convertedText = decimalObj.convertDecimal(word, pos);
-    }
-  }, {
-    key: 'convertToFraction',
-    value: function convertToFraction(word, pos) {
-      // console.log('DecimalOrFraction');
-      var convertedText = fractionObj.convertFraction(word, pos);
-    }
-  }]);
-
-  return DecimalOrFraction;
-}(Cleaner);
-
-module.exports = DecimalOrFraction;
 
 /***/ }),
 /* 17 */
@@ -2065,6 +2401,169 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+var Fraction = __webpack_require__(18);
+var Decimal = __webpack_require__(19);
+var Cleaner = __webpack_require__(0);
+
+var fractionObj = new Fraction();
+var decimalObj = new Decimal();
+
+/**
+ * Class to check whether a string is decimal/fraction.
+ */
+
+var DecimalOrFraction = function (_Cleaner) {
+  _inherits(DecimalOrFraction, _Cleaner);
+
+  /**
+   * @param {string} text - input string.
+   * @param {regex} format - regex to check whether given string is decimal/fraction.
+   * @param {regex} decimalFormat - regex to check if a string is decimal.
+   * @param {regex} fractionFormat - regex to check if a string is fraction. 
+   */
+  function DecimalOrFraction() {
+    _classCallCheck(this, DecimalOrFraction);
+
+    var _this = _possibleConstructorReturn(this, (DecimalOrFraction.__proto__ || Object.getPrototypeOf(DecimalOrFraction)).call(this));
+
+    _this.text = '';
+    _this.format = /^\d+(\.)\d+$|^\d+(\/)\d+$/g;
+    _this.decimalFormat = /^\d+(\.)\d+$/g;
+    _this.fractionFormat = /^\d+(\/)\d+$/g;
+    return _this;
+  }
+
+  /**
+   * Returns the text value
+   */
+
+
+  _createClass(DecimalOrFraction, [{
+    key: 'getText',
+    value: function getText() {
+      return this.text;
+    }
+
+    /**
+     * Sets the text value
+     * @param {string} _str - input string 
+     */
+
+  }, {
+    key: 'setText',
+    value: function setText(_str) {
+      if (_str === undefined) {
+        // console.log('Text cannot be undefined.');
+        return false;
+      }
+      this.text = _str;
+      return true;
+    }
+
+    /**
+     * Checks if a string is a decimal/fraction
+     * @param {string} _str - string to be tested
+     */
+
+  }, {
+    key: 'isValidDecimalOrFraction',
+    value: function isValidDecimalOrFraction(_str) {
+      this.setText(_str);
+      var a = this.setText(_str);
+      var b = this.text.match(this.format);
+      if (b === null || a === false) {
+        return false;
+      }
+      return true;
+    }
+
+    /**
+     * Checks if a string is decimal.
+     * @param {string} _str - string to be tested.
+     */
+
+  }, {
+    key: 'isDecimal',
+    value: function isDecimal(_str) {
+      this.setText(_str);
+      var b = this.text.match(this.decimalFormat);
+      if (b !== null && b.length === 1) {
+        return true;
+      }
+      return false;
+    }
+
+    /**
+     * Checks if a string is a fraction
+     * @param {string} _str - string to be tested 
+     */
+
+  }, {
+    key: 'isFraction',
+    value: function isFraction(_str) {
+      this.setText(_str);
+      var b = this.text.match(this.fractionFormat);
+      if (b !== null && b.length === 1) {
+        return true;
+      }
+      return false;
+    }
+
+    /**
+     * Converts string to decimal
+     * @param {string} word - string to be converted
+     * @param {number} pos - position in string
+     */
+
+  }, {
+    key: 'convertToDecimal',
+    value: function convertToDecimal(word, pos) {
+      // console.log('DecimalOrFraction');
+      var convertedText = decimalObj.convertDecimal(word, pos);
+    }
+
+    /**
+     * Converts string to fraction
+     * @param {string} word - string to be converted
+     * @param {number} pos - position in string
+     */
+
+  }, {
+    key: 'convertToFraction',
+    value: function convertToFraction(word, pos) {
+      // console.log('DecimalOrFraction');
+      var convertedText = fractionObj.convertFraction(word, pos);
+    }
+  }]);
+
+  return DecimalOrFraction;
+}(Cleaner);
+
+module.exports = DecimalOrFraction;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 var NumberToWord = __webpack_require__(2);
 var Replace = __webpack_require__(1);
 var Cleaner = __webpack_require__(0);
@@ -2072,9 +2571,17 @@ var Cleaner = __webpack_require__(0);
 var numberToWord = new NumberToWord();
 var replaceObj = new Replace();
 
+/**
+ * Class to convert fraction to word.
+ */
+
 var Fraction = function (_Cleaner) {
   _inherits(Fraction, _Cleaner);
 
+  /**
+   * @param {string} fraction - input fraction.
+   * @param {regex} fractionFormat - regex to check if a fraction is valid.
+   */
   function Fraction() {
     _classCallCheck(this, Fraction);
 
@@ -2085,6 +2592,12 @@ var Fraction = function (_Cleaner) {
     return _this;
   }
 
+  /**
+   * Sets str to the fraction property
+   * @param {string} str - input string
+   */
+
+
   _createClass(Fraction, [{
     key: 'setFraction',
     value: function setFraction(str) {
@@ -2094,11 +2607,22 @@ var Fraction = function (_Cleaner) {
       this.fraction = str.trim();
       return true;
     }
+
+    /**
+     * Returns the fraction property
+     */
+
   }, {
     key: 'getFraction',
     value: function getFraction() {
       return this.fraction;
     }
+
+    /**
+     * Checks if a string is fraction.
+     * @param {string} str - string to be tested.
+     */
+
   }, {
     key: 'isFraction',
     value: function isFraction(str) {
@@ -2109,6 +2633,13 @@ var Fraction = function (_Cleaner) {
       }
       return true;
     }
+
+    /**
+     * Converts a fraction to word
+     * @param {string} str - word to be converted
+     * @param {number} pos - position is string
+     */
+
   }, {
     key: 'convertFraction',
     value: function convertFraction(str, pos) {
@@ -2133,12 +2664,9 @@ var Fraction = function (_Cleaner) {
 }(Cleaner);
 
 module.exports = Fraction;
-// const obj=new Fraction();
-// console.log(obj.isFraction(23/45));
-// console.log(obj.convertFraction(23/45));
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2152,6 +2680,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 var NumberToWord = __webpack_require__(2);
 var Replace = __webpack_require__(1);
 var Cleaner = __webpack_require__(0);
@@ -2159,9 +2691,17 @@ var Cleaner = __webpack_require__(0);
 var numberToWord = new NumberToWord();
 var replaceObj = new Replace();
 
+/**
+ * Class that converts decimal to string.
+ */
+
 var Decimal = function (_Cleaner) {
   _inherits(Decimal, _Cleaner);
 
+  /**
+   * @param {string} decimal - input decimal number
+   * @param {regex} decimalFormat - regex to match a valid decimal
+   */
   function Decimal() {
     _classCallCheck(this, Decimal);
 
@@ -2171,6 +2711,12 @@ var Decimal = function (_Cleaner) {
     _this.decimalFormat = /^\d+(\.)\d+$/g;
     return _this;
   }
+
+  /**
+   * Sets str to decimal property
+   * @param {string} str - input string.
+   */
+
 
   _createClass(Decimal, [{
     key: 'setDecimal',
@@ -2182,11 +2728,22 @@ var Decimal = function (_Cleaner) {
       this.decimal = str;
       return true;
     }
+
+    /**
+     * Return the decimal property.
+     */
+
   }, {
     key: 'getDecimal',
     value: function getDecimal() {
       return this.decimal;
     }
+
+    /**
+     * Checks whether the given string is decimal
+     * @param {string} str - string to be checked 
+     */
+
   }, {
     key: 'isDecimal',
     value: function isDecimal(str) {
@@ -2197,6 +2754,13 @@ var Decimal = function (_Cleaner) {
       }
       return true;
     }
+
+    /**
+     * Converts string to decimal number.
+     * @param {string} str - string to be converted. 
+     * @param {number} pos - position in string
+     */
+
   }, {
     key: 'convertDecimal',
     value: function convertDecimal(str, pos) {
@@ -2225,102 +2789,6 @@ var Decimal = function (_Cleaner) {
 }(Cleaner);
 
 module.exports = Decimal;
-// const obj = new Decimal();
-// console.log(obj.convertDecimal('33.44'));
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var NumberToWord = __webpack_require__(2);
-var Replace = __webpack_require__(1);
-var Cleaner = __webpack_require__(0);
-
-var numberToWordObj = new NumberToWord();
-var replaceObj = new Replace();
-
-var Phone = function (_Cleaner) {
-  _inherits(Phone, _Cleaner);
-
-  function Phone() {
-    _classCallCheck(this, Phone);
-
-    var _this = _possibleConstructorReturn(this, (Phone.__proto__ || Object.getPrototypeOf(Phone)).call(this));
-
-    _this.text = '';
-    _this.phoneFormat = /^\d{10}$|^\+\d{1,2}\-\d{10}$/g;
-    return _this;
-  }
-
-  _createClass(Phone, [{
-    key: 'getPhone',
-    value: function getPhone() {
-      return this.text;
-    }
-  }, {
-    key: 'setPhone',
-    value: function setPhone(_str) {
-      if (_str === undefined) {
-        return false;
-      }
-      this.text = _str;
-      return true;
-    }
-  }, {
-    key: 'isValidPhone',
-    value: function isValidPhone(_str) {
-      var a = this.setPhone(_str);
-      var b = _str.match(this.phoneFormat);
-      if (a === false || b === null) {
-        return false;
-      }
-      return true;
-    }
-  }, {
-    key: 'convertPhone',
-    value: function convertPhone(_str, pos) {
-      // console.log('phone');
-      if (_str === undefined) {
-        return _str;
-      }
-      var temp = this.clean(_str);
-      _str = temp[1];
-
-      var i = void 0,
-          j = void 0,
-          k = void 0,
-          finalStr = '';
-      // if (_str.charAt(0) === '+') {
-      //     finalStr = '+';
-      // }
-      for (i = 0; i < _str.length; i++) {
-        // console.log(_str.substr(i, 1));
-        if (!isNaN(parseInt(_str.substr(i, 1)))) {
-          finalStr += numberToWordObj.convert(_str.substr(i, 1)) + ' ';
-        }
-      }
-      replaceObj.doReplace(temp[0] + finalStr.trim() + temp[2], pos);
-    }
-  }]);
-
-  return Phone;
-}(Cleaner);
-
-module.exports = Phone;
-// let obj = new Phone();
-// console.log(obj.isValidPhone('+91-9474851429'));
-// obj.convertPhone('+91-9474851429');
 
 /***/ }),
 /* 20 */
@@ -2337,10 +2805,137 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var OrdinalToCardinal = __webpack_require__(21);
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+var NumberToWord = __webpack_require__(2);
+var Replace = __webpack_require__(1);
+var Cleaner = __webpack_require__(0);
+
+var numberToWordObj = new NumberToWord();
+var replaceObj = new Replace();
+
+/**
+ * Class that converts phone number to string
+ */
+
+var Phone = function (_Cleaner) {
+  _inherits(Phone, _Cleaner);
+
+  /**
+   * @param {string} text - string to be converted.
+   */
+  function Phone() {
+    _classCallCheck(this, Phone);
+
+    var _this = _possibleConstructorReturn(this, (Phone.__proto__ || Object.getPrototypeOf(Phone)).call(this));
+
+    _this.text = '';
+    _this.phoneFormat = /^\d{10}$|^\+\d{1,2}\-\d{10}$/g;
+    return _this;
+  }
+
+  /**
+   * Returns the text property
+   */
+
+
+  _createClass(Phone, [{
+    key: 'getPhone',
+    value: function getPhone() {
+      return this.text;
+    }
+
+    /**
+     * Sets _str to text
+     * @param {string} _str - _str to be tested 
+     */
+
+  }, {
+    key: 'setPhone',
+    value: function setPhone(_str) {
+      if (_str === undefined) {
+        return false;
+      }
+      this.text = _str;
+      return true;
+    }
+
+    /**
+     * Checks if a phone number is valid
+     * @param {string} _str - string to be tested.
+     */
+
+  }, {
+    key: 'isValidPhone',
+    value: function isValidPhone(_str) {
+      var a = this.setPhone(_str);
+      var b = _str.match(this.phoneFormat);
+      if (a === false || b === null) {
+        return false;
+      }
+      return true;
+    }
+
+    /**
+     * Converts phone number to words
+     * @param {string} _str - phone number to be converted.
+     * @param {number} pos - position in string
+     */
+
+  }, {
+    key: 'convertPhone',
+    value: function convertPhone(_str, pos) {
+      // console.log('phone');
+      if (_str === undefined) {
+        return _str;
+      }
+      var temp = this.clean(_str);
+      _str = temp[1];
+
+      var i = void 0,
+          j = void 0,
+          k = void 0,
+          finalStr = '';
+      for (i = 0; i < _str.length; i++) {
+        // console.log(_str.substr(i, 1));
+        if (!isNaN(parseInt(_str.substr(i, 1)))) {
+          finalStr += numberToWordObj.convert(_str.substr(i, 1)) + ' ';
+        }
+      }
+      replaceObj.doReplace(temp[0] + finalStr.trim() + temp[2], pos);
+    }
+  }]);
+
+  return Phone;
+}(Cleaner);
+
+module.exports = Phone;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
+var OrdinalToCardinal = __webpack_require__(22);
 var cTime = __webpack_require__(4);
 var Replace = __webpack_require__(1);
-var Weight = __webpack_require__(22);
+var Weight = __webpack_require__(23);
 var Cleaner = __webpack_require__(0);
 
 var ordinalToCardinalObj = new OrdinalToCardinal();
@@ -2348,9 +2943,16 @@ var cTimeObj = new cTime();
 var replaceObj = new Replace();
 var weightObj = new Weight();
 
+/**
+ * Class to check if number contains any suffix and prefix
+ */
+
 var SuffixPrefix = function (_Cleaner) {
   _inherits(SuffixPrefix, _Cleaner);
 
+  /**
+   * @param {string} text - string to be tested
+   */
   function SuffixPrefix() {
     _classCallCheck(this, SuffixPrefix);
 
@@ -2361,6 +2963,12 @@ var SuffixPrefix = function (_Cleaner) {
     return _this;
   }
 
+  /**
+   * Sets text to _str
+   * @param {string} _str - string to be tested
+   */
+
+
   _createClass(SuffixPrefix, [{
     key: 'setText',
     value: function setText(_str) {
@@ -2370,11 +2978,22 @@ var SuffixPrefix = function (_Cleaner) {
       this.text = _str;
       return true;
     }
+
+    /**
+     * Return text value
+     */
+
   }, {
     key: 'getText',
     value: function getText() {
       return this.text;
     }
+
+    /**
+     * Checks if _str is valid
+     * @param {string} _str - string to be tested
+     */
+
   }, {
     key: 'isValidSuffixPrefix',
     value: function isValidSuffixPrefix(_str) {
@@ -2384,6 +3003,13 @@ var SuffixPrefix = function (_Cleaner) {
       }
       return false;
     }
+
+    /**
+     * Chooses appropiate branch as per the string
+     * @param {string} word - string to be tested
+     * @param {number} pos - position in original string
+     */
+
   }, {
     key: 'chooseBranch',
     value: function chooseBranch(word, pos) {
@@ -2410,7 +3036,7 @@ var SuffixPrefix = function (_Cleaner) {
 module.exports = SuffixPrefix;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2424,6 +3050,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 var Replace = __webpack_require__(1);
 var NumberToWord = __webpack_require__(2);
 var Cleaner = __webpack_require__(0);
@@ -2431,9 +3061,16 @@ var Cleaner = __webpack_require__(0);
 var replaceObj = new Replace();
 var numberToWordObj = new NumberToWord();
 
+/**
+ * Class that converts ordinal to cardinal
+ */
+
 var OrdinalToCardinal = function (_Cleaner) {
   _inherits(OrdinalToCardinal, _Cleaner);
 
+  /**
+   * @param {string} text - string to be converted
+   */
   function OrdinalToCardinal() {
     _classCallCheck(this, OrdinalToCardinal);
 
@@ -2443,11 +3080,22 @@ var OrdinalToCardinal = function (_Cleaner) {
     return _this;
   }
 
+  /**
+   * Return the text value
+   */
+
+
   _createClass(OrdinalToCardinal, [{
     key: 'getText',
     value: function getText() {
       return this.text;
     }
+
+    /**
+     * Sets _str to string
+     * @param {string} _str - string to be processed 
+     */
+
   }, {
     key: 'setText',
     value: function setText(_str) {
@@ -2457,6 +3105,12 @@ var OrdinalToCardinal = function (_Cleaner) {
       this.text = _str;
       return true;
     }
+
+    /**
+     * Checks if a valid ordinal
+     * @param {string } _str - string to be checked
+     */
+
   }, {
     key: 'isValidOrdinal',
     value: function isValidOrdinal(_str) {
@@ -2474,6 +3128,13 @@ var OrdinalToCardinal = function (_Cleaner) {
         return a;
       } else return false;
     }
+
+    /**
+     * Converts ordinal to cardinal
+     * @param {string} word - string to be converted
+     * @param {number} pos - position in string
+     */
+
   }, {
     key: 'convertOrdinal',
     value: function convertOrdinal(word, pos) {
@@ -2510,7 +3171,7 @@ var OrdinalToCardinal = function (_Cleaner) {
 module.exports = OrdinalToCardinal;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2524,6 +3185,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * @author Priyanjit Dey <priyanjitcareer@gmail.com>
+ */
+
 var Replace = __webpack_require__(1);
 var NumberToWord = __webpack_require__(2);
 var Cleaner = __webpack_require__(0);
@@ -2531,9 +3196,16 @@ var Cleaner = __webpack_require__(0);
 var replaceObj = new Replace();
 var numberToWordObj = new NumberToWord();
 
+/**
+ * Class to convert weight to string format
+ */
+
 var Weight = function (_Cleaner) {
   _inherits(Weight, _Cleaner);
 
+  /**
+   * @param {string} text - weight to be converted
+   */
   function Weight() {
     _classCallCheck(this, Weight);
 
@@ -2544,6 +3216,12 @@ var Weight = function (_Cleaner) {
     return _this;
   }
 
+  /**
+   * Sets the value of text
+   * @param {string} str - value to be set
+   */
+
+
   _createClass(Weight, [{
     key: 'setText',
     value: function setText(str) {
@@ -2553,11 +3231,22 @@ var Weight = function (_Cleaner) {
       this.text = str;
       return true;
     }
+
+    /**
+     * Returns the text value
+     */
+
   }, {
     key: 'getText',
     value: function getText() {
       return this.text;
     }
+
+    /**
+     * Checks if str is a valid weight.
+     * @param {string} str - str to be tested.
+     */
+
   }, {
     key: 'isValidWeight',
     value: function isValidWeight(str) {
@@ -2569,6 +3258,12 @@ var Weight = function (_Cleaner) {
       }
       return true;
     }
+
+    /**
+     * Fetch number from a string
+     * @param {string} word - string from which number is to be fetched.
+     */
+
   }, {
     key: 'fetchNumber',
     value: function fetchNumber(word) {
@@ -2578,6 +3273,13 @@ var Weight = function (_Cleaner) {
       }
       return word.substr(0, j + 1);
     }
+
+    /**
+     * Converts a weight to string.
+     * @param {string} word - weight to be converted.
+     * @param {number} pos - position in original string.
+     */
+
   }, {
     key: 'convertWeight',
     value: function convertWeight(word, pos) {

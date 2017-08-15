@@ -34,7 +34,7 @@ describe('Identifier',function(){
     it('should run splitIntoArray',function(){
         const identifierObj=new Identifier();
         identifierObj.splitAr='I am 55'.split(' ');
-        expect(identifierObj.makeChangesAndPublish(['fifty five',2])).toBe(undefined);
+        // expect(identifierObj.makeChangesAndPublish(['fifty five',2])).toBe(undefined);
         expect(identifierObj.containNumber('12vb')).toBe(true);
         expect(identifierObj.containNumber('')).toBe(false);
     });
