@@ -81,7 +81,7 @@ class EventManager extends EventEmitter {
       }
     }
     // console.log(finalStr.trim());
-    document.getElementById('input2').value = finalStr.trim();
+    document.getElementById('input2').value += finalStr.trim();
   }
 }
 

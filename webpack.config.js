@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-        entry: './src/identifier.js',
+        entry: './src/chunk.js',
         output: {
             path: path.resolve(__dirname, 'build'),
             filename: 'main.bundle.js'

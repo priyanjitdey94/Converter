@@ -47,6 +47,9 @@ eventManager.on('finish', (arr) => {
  */
 eventManager.on('done', (arr) => {
   eventManager.makeChangesAndPublish(arr);
+  setTimeout(function () {
+    eventManager.emit('sendNext');
+  }, 5);
 });
 
 module.exports = Replace;
